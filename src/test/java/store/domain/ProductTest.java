@@ -7,8 +7,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class ProductTest {
-    @ParameterizedTest
     @DisplayName("상품의 기본 정보 관리")
+    @ParameterizedTest(name = "상품이름: {0}, 상품가격: {1}, 상품재고: {2}, 상품프로모션종류: {3}")
     @CsvSource(
             value = {"콜라,1000,10,탄산2+1", "콜라,1000,10,null", "사이다,1000,8,탄산2+1", "사이다,1000,7,null"},
             nullValues = {"null"}
