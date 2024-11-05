@@ -8,28 +8,28 @@
 
 ### Product
 - **상품의 기본 정보 관리**
-    - [x] `name`: 상품명
+    - `name`: 상품명
       - 상품명은 null이 될 수 없다.
       - 상품명은 공백으로 이루어진 문자열이 될 수 없다.
       - 상품명의 길이는 최대 100자 이하이다.
-    - [x] `price`: 상품의 단가
+    - `price`: 상품의 단가
       - 상품의 단가는 0원 또는 음수가 될 수 없다.
-      - 상품의 단가는 Integer 범위 안에서 정의되어야 한다.
-    - [x] `stock`: 현재 재고 수량
+      - 상품의 단가는 어떤 범위의 숫자든 상관 없어야 한다.
+    - `stock`: 현재 재고 수량
       - 재고의 수량은 음수가 될 수 없다.
-      - 재고의 수량은 Integer 범위 안에서 정의되어야 한다.
-    - [x] `promotionStock`: 프로모션용 재고 수량
+      - 재고의 수량은 어떤 범위의 숫자든 상관 없어야 한다.
+    - `promotionStock`: 프로모션용 재고 수량
       - 재고의 수량은 음수가 될 수 없다.
-      - 재고의 수량은 Integer 범위 안에서 정의되어야 한다.
+      - 재고의 수량은 어떤 범위의 숫자든 상관 없어야 한다.
 - **재고 확인 및 감소**
-    - [x] `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
-    - [ ] `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
-    - [ ] `decrementPromotionStock(int quantity)`: 프로모션용 재고를 우선적으로 차감
+    - `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
+    - `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
+    - `decrementPromotionStock(int quantity)`: 프로모션용 재고를 우선적으로 차감
 - **프로모션 확인**
-    - [ ] `isEligibleForPromotion()`: 해당 상품이 프로모션 대상인지 확인
-    - [ ] `applyPromotion(int quantity, int promotionThreshold)`: 구매 수량과 프로모션 조건에 따라 무료 증정 수량을 반환
+    - `isEligibleForPromotion()`: 해당 상품이 프로모션 대상인지 확인
+    - `applyPromotion(int quantity, int promotionThreshold)`: 구매 수량과 프로모션 조건에 따라 무료 증정 수량을 반환
 
-### Promotion
+### PromotionType
 - **프로모션 정책 관리**
     - `type`: 프로모션 유형 (1+1, 2+1 등)
     - `startDate`, `endDate`: 프로모션 시작일과 종료일 관리
