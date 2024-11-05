@@ -52,6 +52,17 @@ class ProductTest {
         });
     }
 
+    @DisplayName("상품의 이름이 100자를 초과하는 문자열일 경우")
+    @ParameterizedTest(name = "상품이름이 100자를 초과함")
+    @ValueSource(strings = {"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
+    void testProductFieldNameOver100Exception(String name) {
+        assertSoftly(softly -> {
+            softly.assertThatThrownBy(() -> new Product(name, 1000, 10, 10))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("[ERROR]");
+        });
+    }
+
     @DisplayName("상품의 가격이 0원 또는 음수일 경우")
     @ParameterizedTest(name = "상품이름: {0}, 상품가격: {1}, 상품재고: {2}, 프로모션상품재고: {3}")
     @CsvSource(
