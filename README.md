@@ -11,7 +11,7 @@
     - [x] `stock`: 현재 재고 수량
     - [x] `promotionStock`: 프로모션용 재고 수량
 - **재고 확인 및 감소**
-    - [ ] `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
+    - [x] `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
     - [ ] `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
     - [ ] `decrementPromotionStock(int quantity)`: 프로모션용 재고를 우선적으로 차감
 - **프로모션 확인**
