@@ -2,14 +2,24 @@
 
 ---
 
-# 결제 시스템 도메인 객체 기능 명세
+# 결제 시스템 기능 명세
 
-## Product
+## 도메인 객체 기능 명세
+
+### Product
 - **상품의 기본 정보 관리**
     - [x] `name`: 상품명
+      - 상품명은 null이 될 수 없다.
+      - 상품명의 길이는 최대 100자 이하이다.
     - [x] `price`: 상품의 단가
+      - 상품의 단가는 0원 또는 음수가 될 수 없다.
+      - 상품의 단가는 Integer 범위 안에서 정의되어야 한다.
     - [x] `stock`: 현재 재고 수량
+      - 재고의 수량은 음수가 될 수 없다.
+      - 재고의 수량은 Integer 범위 안에서 정의되어야 한다.
     - [x] `promotionStock`: 프로모션용 재고 수량
+      - 재고의 수량은 음수가 될 수 없다.
+      - 재고의 수량은 Integer 범위 안에서 정의되어야 한다.
 - **재고 확인 및 감소**
     - [x] `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
     - [ ] `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
@@ -18,14 +28,14 @@
     - [ ] `isEligibleForPromotion()`: 해당 상품이 프로모션 대상인지 확인
     - [ ] `applyPromotion(int quantity, int promotionThreshold)`: 구매 수량과 프로모션 조건에 따라 무료 증정 수량을 반환
 
-## Promotion
+### Promotion
 - **프로모션 정책 관리**
     - `type`: 프로모션 유형 (1+1, 2+1 등)
     - `startDate`, `endDate`: 프로모션 시작일과 종료일 관리
     - `isWithinPromotionPeriod()`: 현재 날짜가 프로모션 기간 내에 있는지 확인
     - `calculatePromotionDiscount(Product product, int quantity)`: 프로모션 조건에 따라 할인을 적용할 수 있는 수량을 계산
 
-## Order
+### Order
 - **구매 요청 관리**
     - `items`: 고객이 구매한 상품과 수량 목록
     - `addProduct(Product product, int quantity)`: 고객이 구매 요청한 상품을 목록에 추가
@@ -35,12 +45,12 @@
 - **멤버십 할인 적용**
     - `applyMembershipDiscount()`: 멤버십 할인을 적용하여 프로모션 미적용 금액의 30%를 할인하고, 최대 8,000원 한도를 고려해 최종 결제 금액 산출
 
-## Customer
+### Customer
 - **구매자 정보 관리**
     - `isMember`: 멤버십 회원 여부 확인
     - `getMembershipDiscountAmount()`: 멤버십 할인 금액 계산 및 한도 적용
 
-## Receipt
+### Receipt
 - **영수증 생성 및 출력**
     - `generatePurchaseSummary(Order order)`: 고객이 구매한 상품 내역을 정리하여 상품명, 수량, 가격을 출력
     - `generatePromotionSummary(Order order)`: 프로모션에 따른 무료 증정 상품 내역을 출력
