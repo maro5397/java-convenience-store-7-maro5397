@@ -23,6 +23,7 @@
       - 재고의 수량은 어떤 범위의 숫자든 상관 없어야 한다.
 - **재고 확인 및 감소**
     - `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
+      - 재고 수량을 구매 수량이 초과할 경우 예외 발생
     - `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
     - `decrementPromotionStock(int quantity)`: 프로모션용 재고를 우선적으로 차감
 - **프로모션 확인**
