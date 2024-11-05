@@ -32,10 +32,12 @@ public class Product {
         return promotionStock;
     }
 
-    public boolean hasSufficientStock(int quantity) {
+    public void hasSufficientStock(int quantity) {
         BigInteger totalStock = stock.add(promotionStock);
         BigInteger quantityBigInteger = BigInteger.valueOf(quantity);
-        return totalStock.compareTo(quantityBigInteger) >= 0;
+        if(totalStock.compareTo(quantityBigInteger) < 0) {
+            throw new IllegalArgumentException("[ERROR] 재고 수량이 충분하지 않습니다.");
+        }
     }
 
     private void validate(Product product) {
