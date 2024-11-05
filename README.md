@@ -6,10 +6,10 @@
 
 ## Product
 - **상품의 기본 정보 관리**
-    - [ ] `name`: 상품명
-    - [ ] `price`: 상품의 단가
-    - [ ] `stock`: 현재 재고 수량
-    - [ ] `promotionStock`: 프로모션용 재고 수량
+    - [x] `name`: 상품명
+    - [x] `price`: 상품의 단가
+    - [x] `stock`: 현재 재고 수량
+    - [x] `promotionStock`: 프로모션용 재고 수량
 - **재고 확인 및 감소**
     - [ ] `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
     - [ ] `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
