@@ -28,4 +28,8 @@ public class Product {
     public String getPromotionStock() {
         return promotionStock;
     }
+
+    public boolean hasSufficientStock(int quantity) {
+        return stock - quantity >= 0;
+    }
 }
