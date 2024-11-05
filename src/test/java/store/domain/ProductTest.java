@@ -94,9 +94,10 @@ class ProductTest {
     @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
     void testHasSufficientStock(int quantity) {
         Product product = new Product("콜라", 1000, 10, 0);
-        boolean isSufficientStock = product.hasSufficientStock(quantity);
         assertSoftly(softly -> {
-            softly.assertThat(isSufficientStock).isTrue();
+            softly.assertThatCode(() -> {
+                product.hasSufficientStock(quantity);
+            }).doesNotThrowAnyException();
         });
     }
 
@@ -105,9 +106,10 @@ class ProductTest {
     @ValueSource(ints = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20})
     void testHasNotSufficientStock(int quantity) {
         Product product = new Product("콜라", 1000, 10, 0);
-        boolean isSufficientStock = product.hasSufficientStock(quantity);
         assertSoftly(softly -> {
-            softly.assertThat(isSufficientStock).isFalse();
+            softly.assertThatThrownBy(() -> product.hasSufficientStock(quantity))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("[ERROR]");
         });
     }
 }
