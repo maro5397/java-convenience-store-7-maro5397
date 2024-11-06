@@ -17,7 +17,7 @@ class PromotionProductTest {
 
     @DisplayName("구매된 수량만큼 재고를 차감")
     @ParameterizedTest(name = "프로모션 구매 수량: {0}")
-    @ValueSource(ints = {1, 2, 3, 4, 5})
+    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15})
     void testDecrementStock(int quantity) {
         PromotionProduct cola = new PromotionProduct("콜라", 1000, 10, promotion);
         assertSoftly(softly -> {
