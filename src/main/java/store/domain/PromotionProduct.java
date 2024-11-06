@@ -13,8 +13,16 @@ public class PromotionProduct {
         this.promotion = promotion;
     }
 
-    public int decrementStock(int quantity) {
-        stock -= quantity;
-        return stock;
+    public PromotionResult decrementStock(int quantity) {
+        PromotionResult promotionResult = promotion.calculatePromotionDiscount(stock, quantity);
+        int paidItemCount = promotionResult.getPaidItemCount();
+        int noneDiscountItemCount = promotionResult.getNoneDiscountItemCount();
+        stock -= promotionResult.getFreeItemCount() + promotionResult.getPaidItemCount();
+        for(int i = 0; i < promotionResult.getNoneDiscountItemCount() && stock != 0; i++) {
+            stock -= 1;
+            paidItemCount += 1;
+            noneDiscountItemCount -= 1;
+        }
+        return new PromotionResult(promotionResult.getFreeItemCount(), paidItemCount, noneDiscountItemCount);
     }
 }
