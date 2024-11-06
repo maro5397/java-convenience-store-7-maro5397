@@ -18,16 +18,17 @@ class PromotionTest {
     @ParameterizedTest(name = "프로모션 날짜: {1}")
     @CsvSource(
             value = {
-                    "6,2024-11-06 00:00,2", "7,2024-11-06 00:00,2", "8,2024-11-06 00:00,4",
-                    "19,2024-11-06 00:00,8", "30,2024-11-06 00:00,14", "50,2024-11-06 00:00,24"
+                    "6,2024-11-06 00:00,2,2", "7,2024-11-06 00:00,2,2", "8,2024-11-06 00:00,4,4",
+                    "19,2024-11-06 00:00,4,4", "30,2024-11-06 00:00,4,4", "50,2024-11-06 00:00,4,4"
             }
     )
-    void testWithinPromotionPeriod(int quantity, String dateTime, int result) {
+    void testWithinPromotionPeriod(int quantity, String dateTime, int freeItemCount, int paidItemCount) {
         settingPromotion(dateTime);
-        Receipt receipt = softDrinkPromotion.calculatePromotionDiscount(quantity);
+        PromotionResult promotionResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
         LocalDateTime now = LocalDateTime.parse(dateTime, formatter);
         assertSoftly(softly -> {
-            softly.assertThat(receipt.getFreeItemCount()).isEqualTo(result);
+            softly.assertThat(promotionResult.getFreeItemCount()).isEqualTo(freeItemCount);
+            softly.assertThat(promotionResult.getPaidItemCount()).isEqualTo(paidItemCount);
         });
     }
 
@@ -42,9 +43,10 @@ class PromotionTest {
     )
     void testWithoutPromotionPeriod(int quantity, String dateTime) {
         settingPromotion(dateTime);
-        Receipt receipt = softDrinkPromotion.calculatePromotionDiscount(quantity);
+        PromotionResult promotionResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
         assertSoftly(softly -> {
-            softly.assertThat(receipt.getFreeItemCount()).isEqualTo(0);
+            softly.assertThat(promotionResult.getFreeItemCount()).isEqualTo(0);
+            softly.assertThat(promotionResult.getPaidItemCount()).isEqualTo(0);
         });
     }
 
