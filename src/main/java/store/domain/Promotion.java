@@ -1,24 +1,33 @@
 package store.domain;
 
-import java.time.LocalDateTime;
+import store.domain.strategy.PromotionStrategy;
 
 public class Promotion {
     private final String name;
     private final int buy;
     private final int get;
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final PromotionStrategy promotionStrategy;
 
-    public Promotion(String name, int buy, int get, LocalDateTime startDate, LocalDateTime endDate) {
+    public Promotion(
+            String name,
+            int buy,
+            int get,
+            PromotionStrategy promotionStrategy
+    ) {
         this.name = name;
         this.buy = buy;
         this.get = get;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.promotionStrategy = promotionStrategy;
     }
 
-    public boolean isWithinPromotionPeriod(LocalDateTime now) {
-        return (now.isEqual(startDate) || now.isAfter(startDate)) &&
-                (now.isEqual(endDate) || now.isBefore(endDate));
+    public int calculatePromotionDiscount(int quantity) {
+        if (!isWithinPromotionPeriod()) {
+            return 0;
+        }
+        return (quantity / (buy + get)) * get;
+    }
+
+    private boolean isWithinPromotionPeriod() {
+        return this.promotionStrategy.getPromotionConditionChecker();
     }
 }
