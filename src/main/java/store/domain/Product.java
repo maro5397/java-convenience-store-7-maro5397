@@ -1,85 +1,76 @@
 package store.domain;
 
-import java.math.BigInteger;
-
 public class Product {
     private final String name;
-    private final BigInteger price;
-    private final BigInteger stock;
-    private final BigInteger promotionStock;
+    private final int price;
+    private int stock;
+    private final PromotionProduct promotionProduct;
 
-    public Product(String name, int price, int stock, int promotionStock) {
+    public Product(String name, int price, int stock, PromotionProduct promotionProduct) {
         this.name = name;
-        this.price = BigInteger.valueOf(price);
-        this.stock = BigInteger.valueOf(stock);
-        this.promotionStock = BigInteger.valueOf(promotionStock);
-        validate(this);
+        this.price = price;
+        this.stock = stock;
+        this.promotionProduct = promotionProduct;
+        validate();
     }
 
     public String getName() {
         return name;
     }
 
-    public BigInteger getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public BigInteger getStock() {
+    public int getStock() {
         return stock;
     }
 
-    public BigInteger getPromotionStock() {
-        return promotionStock;
+    public PromotionProduct getPromotionProduct() {
+        return promotionProduct;
     }
 
-    public void hasSufficientStock(int quantity) {
-        BigInteger totalStock = stock.add(promotionStock);
-        BigInteger quantityBigInteger = BigInteger.valueOf(quantity);
-        if(totalStock.compareTo(quantityBigInteger) < 0) {
-            throw new IllegalArgumentException("[ERROR] 재고 수량이 충분하지 않습니다.");
-        }
+    public void decrementStock(int quantity) {
+        hasSufficientStock(quantity);
+        PromotionResult promotionResult = this.promotionProduct.decrementStock(quantity);
+        stock -= promotionResult.getNoneDiscountItemCount();
     }
 
-    private void validate(Product product) {
-        validateName(product.getName());
-        validatePrice(product.getPrice());
-        validateStock(product.getStock());
-        validateStock(product.getPromotionStock());
+    private void validate() {
+        validateName();
+        validatePrice();
+        validateStock();
+        validateStock();
     }
 
-    private void validateName(String name) {
-        if (name == null || name.isEmpty()) {
+    private void validateName() {
+        if (this.name == null) {
             throw new IllegalArgumentException("[ERROR] 상품 이름이 없습니다.");
         }
-        if (name.isBlank()) {
+        if (this.name.isBlank()) {
             throw new IllegalArgumentException("[ERROR] 이름은 공백 문자열이 될 수 없습니다.");
         }
-        if (name.length() > 100) {
+        if (this.name.length() > 100) {
             throw new IllegalArgumentException("[ERROR] 상품 이름은 100자 이하여야 합니다.");
         }
     }
 
-    private void validatePrice(BigInteger price) {
-        if (price.compareTo(BigInteger.ZERO) <= 0) {
+    private void validatePrice() {
+        if (this.price <= 0) {
             throw new IllegalArgumentException("[ERROR] 가격은 음수나 0이 될 수 없습니다.");
         }
     }
 
-    private void validateStock(BigInteger stock) {
-        if (stock.compareTo(BigInteger.ZERO) < 0) {
+    private void validateStock() {
+        if (this.stock < 0) {
             throw new IllegalArgumentException("[ERROR] 재고는 음수가 될 수 없습니다.");
         }
     }
 
-    public BigInteger decrementStock(int quantity) {
-        hasSufficientStock(quantity);
-        BigInteger quantityBigInteger = BigInteger.valueOf(quantity);
-        return stock.subtract(quantityBigInteger);
-    }
-
-    public BigInteger decrementPromotionStock(int quantity) {
-        hasSufficientStock(quantity);
-        BigInteger quantityBigInteger = BigInteger.valueOf(quantity);
-        return promotionStock.subtract(quantityBigInteger);
+    private void hasSufficientStock(int quantity) {
+        int totalStock = stock + this.promotionProduct.getStock();
+        if(totalStock < quantity) {
+            throw new IllegalArgumentException("[ERROR] 재고 수량이 충분하지 않습니다.");
+        }
     }
 }
