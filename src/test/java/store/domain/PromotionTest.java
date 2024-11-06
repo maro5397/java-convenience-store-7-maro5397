@@ -18,15 +18,16 @@ class PromotionTest {
     @ParameterizedTest(name = "프로모션 날짜: {1}")
     @CsvSource(
             value = {
-                    "1,2024-11-06 00:00", "2,2024-11-06 00:00", "3,2024-11-06 00:00"
+                    "6,2024-11-06 00:00,2", "7,2024-11-06 00:00,2", "8,2024-11-06 00:00,4",
+                    "19,2024-11-06 00:00,8", "30,2024-11-06 00:00,14", "50,2024-11-06 00:00,24"
             }
     )
-    void testWithinPromotionPeriod(int quantity, String dateTime) {
+    void testWithinPromotionPeriod(int quantity, String dateTime, int result) {
         settingPromotion(dateTime);
         LocalDateTime now = LocalDateTime.parse(dateTime, formatter);
         assertSoftly(softly -> {
             softly.assertThat(softDrinkPromotion.calculatePromotionDiscount(quantity))
-                    .isEqualTo((quantity / (2 + 1)));
+                    .isEqualTo(result);
         });
     }
 
@@ -56,7 +57,7 @@ class PromotionTest {
         softDrinkPromotion = new Promotion(
                 "탄산2+1",
                 2,
-                1,
+                2,
                 promotionStrategy
         );
     }
