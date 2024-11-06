@@ -93,7 +93,7 @@ class ProductTest {
     @ParameterizedTest(name = "구매 수량({0}), 재고 수량(10)")
     @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
     void testHasSufficientStock(int quantity) {
-        Product product = new Product("콜라", 1000, 10, 0);
+        Product product = new Product("콜라", 1000, 5, 5);
         assertSoftly(softly -> {
             softly.assertThatCode(() -> {
                 product.hasSufficientStock(quantity);
@@ -105,11 +105,21 @@ class ProductTest {
     @ParameterizedTest(name = "구매 수량({0}), 재고 수량(10)")
     @ValueSource(ints = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20})
     void testHasNotSufficientStock(int quantity) {
-        Product product = new Product("콜라", 1000, 10, 0);
+        Product product = new Product("콜라", 1000, 5, 5);
         assertSoftly(softly -> {
             softly.assertThatThrownBy(() -> product.hasSufficientStock(quantity))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("[ERROR]");
+        });
+    }
+
+    @DisplayName("구매된 수량만큼 재고를 차감")
+    @ParameterizedTest(name = "구매 수량({0}), 재고 수량(5)")
+    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+    void testDecrementStock(int quantity) {
+        Product product = new Product("콜라", 1000, 5, 5);
+        assertSoftly(softly -> {
+            softly.assertThat(product.decrementStock(quantity)).isEqualTo(5-quantity);
         });
     }
 }
