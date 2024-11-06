@@ -70,4 +70,10 @@ public class Product {
             throw new IllegalArgumentException("[ERROR] 재고는 음수가 될 수 없습니다.");
         }
     }
+
+    public BigInteger decrementStock(int quantity) {
+        hasSufficientStock(quantity);
+        BigInteger quantityBigInteger = BigInteger.valueOf(quantity);
+        return stock.subtract(quantityBigInteger);
+    }
 }
