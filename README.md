@@ -6,6 +6,12 @@
 
 ## 도메인 객체 기능 명세
 
+### Receipt
+- **프로모션 정책을 적용했을때 결과**
+    - `freeItemCount`: 프로모션으로 받을 수 있는 상품 개수
+    - `paidItemCount`: 프로모션 적용 후 결제해야하는 상품 개수
+    - `noneDiscountItemCount`: 프로모션 적용을 받지 못하는 상품 개수
+
 ### Promotion
 - **프로모션 정책 관리**
     - `type`: 프로모션 유형 (1+1, 2+1 등)
@@ -24,9 +30,9 @@
         - 재고의 수량은 음수가 될 수 없다.
         - 재고의 수량은 어떤 범위의 숫자든 상관 없어야 한다.
 - **재고 확인 및 감소**
+    - `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
     - `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
         - 재고 수량을 구매 수량이 초과할 경우 예외 발생
-    - `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
 - **프로모션 확인**
     - `applyPromotion(int quantity, int promotionThreshold)`: 구매 수량과 프로모션 조건에 따라 무료 증정 수량을 반환
 
@@ -66,14 +72,6 @@
 - **구매자 정보 관리**
     - `isMember`: 멤버십 회원 여부 확인
     - `getMembershipDiscountAmount()`: 멤버십 할인 금액 계산 및 한도 적용
-
-### Receipt
-- **영수증 생성 및 출력**
-    - `generatePurchaseSummary(Order order)`: 고객이 구매한 상품 내역을 정리하여 상품명, 수량, 가격을 출력
-    - `generatePromotionSummary(Order order)`: 프로모션에 따른 무료 증정 상품 내역을 출력
-    - `generatePriceSummary(Order order)`: 총구매액, 행사할인, 멤버십할인, 내실돈을 포함한 최종 결제 정보를 요약하여 출력
-- **형식 정리**
-    - `formatReceipt()`: 영수증 각 항목을 정렬하여 보기 쉽게 출력
 
 ---
 ### 실행 예시
