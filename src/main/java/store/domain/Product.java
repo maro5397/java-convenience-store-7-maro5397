@@ -76,4 +76,10 @@ public class Product {
         BigInteger quantityBigInteger = BigInteger.valueOf(quantity);
         return stock.subtract(quantityBigInteger);
     }
+
+    public BigInteger decrementPromotionStock(int quantity) {
+        hasSufficientStock(quantity);
+        BigInteger quantityBigInteger = BigInteger.valueOf(quantity);
+        return promotionStock.subtract(quantityBigInteger);
+    }
 }
