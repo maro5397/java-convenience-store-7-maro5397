@@ -24,10 +24,10 @@ class PromotionTest {
     )
     void testWithinPromotionPeriod(int quantity, String dateTime, int result) {
         settingPromotion(dateTime);
+        Receipt receipt = softDrinkPromotion.calculatePromotionDiscount(quantity);
         LocalDateTime now = LocalDateTime.parse(dateTime, formatter);
         assertSoftly(softly -> {
-            softly.assertThat(softDrinkPromotion.calculatePromotionDiscount(quantity))
-                    .isEqualTo(result);
+            softly.assertThat(receipt.getFreeItemCount()).isEqualTo(result);
         });
     }
 
@@ -42,9 +42,9 @@ class PromotionTest {
     )
     void testWithoutPromotionPeriod(int quantity, String dateTime) {
         settingPromotion(dateTime);
+        Receipt receipt = softDrinkPromotion.calculatePromotionDiscount(quantity);
         assertSoftly(softly -> {
-            softly.assertThat(softDrinkPromotion.calculatePromotionDiscount(quantity))
-                    .isZero();
+            softly.assertThat(receipt.getFreeItemCount()).isEqualTo(0);
         });
     }
 
