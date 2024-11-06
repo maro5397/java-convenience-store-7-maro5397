@@ -20,11 +20,13 @@ public class Promotion {
         this.promotionStrategy = promotionStrategy;
     }
 
-    public int calculatePromotionDiscount(int quantity) {
+    public Receipt calculatePromotionDiscount(int quantity) {
         if (!isWithinPromotionPeriod()) {
-            return 0;
+            return new Receipt(0, 0, quantity);
         }
-        return (quantity / (buy + get)) * get;
+        int freeItemCount = (quantity / (buy + get)) * get;
+        int paidItemCount = freeItemCount / get * buy;
+        return new Receipt(freeItemCount, paidItemCount, quantity - paidItemCount - freeItemCount);
     }
 
     private boolean isWithinPromotionPeriod() {
