@@ -10,8 +10,8 @@ import store.domain.strategy.impl.LocalDateTimePromotionStrategy;
 
 class PromotionProductTest {
     private final PromotionStrategy promotionStrategy = new LocalDateTimePromotionStrategy(
-            "2024-01-01 00:00",
-            "2024-12-31 00:00"
+            "2024-01-01",
+            "2024-12-31"
     );
     private final Promotion promotion = new Promotion("탄산2+1", 2, 1, promotionStrategy);
 
