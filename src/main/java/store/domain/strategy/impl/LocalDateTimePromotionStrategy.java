@@ -11,8 +11,8 @@ public class LocalDateTimePromotionStrategy implements PromotionStrategy {
     private final LocalDateTime endDate;
 
     public LocalDateTimePromotionStrategy(String startDate, String endDate) {
-        this.startDate = LocalDateTime.parse(startDate, formatter);;
-        this.endDate = LocalDateTime.parse(endDate, formatter);;
+        this.startDate = LocalDateTime.parse(startDate + " 00:00", formatter);;
+        this.endDate = LocalDateTime.parse(endDate + " 00:00", formatter);;
     }
 
     @Override
