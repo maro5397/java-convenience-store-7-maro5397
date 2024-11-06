@@ -6,6 +6,30 @@
 
 ## 도메인 객체 기능 명세
 
+### Promotion
+- **프로모션 정책 관리**
+    - `type`: 프로모션 유형 (1+1, 2+1 등)
+    - `startDate`, `endDate`: 프로모션 시작일과 종료일 관리
+    - `isWithinPromotionPeriod(LocalDateTime now)`: 현재 날짜가 프로모션 기간 내에 있는지 확인
+    - `calculatePromotionDiscount(Product product, int quantity)`: 프로모션 조건에 따라 할인을 적용할 수 있는 수량을 계산
+
+### PromotionProduct
+- **상품의 기본 정보 관리**
+    - `promotion`: 프로모션 정보
+        - 등록되지 않은 프로모션을 사용할 수 없다.
+    - `price`: 상품의 단가
+        - 상품의 단가는 0원 또는 음수가 될 수 없다.
+        - 상품의 단가는 어떤 범위의 숫자든 상관 없어야 한다.
+    - `stock`: 현재 재고 수량
+        - 재고의 수량은 음수가 될 수 없다.
+        - 재고의 수량은 어떤 범위의 숫자든 상관 없어야 한다.
+- **재고 확인 및 감소**
+    - `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
+        - 재고 수량을 구매 수량이 초과할 경우 예외 발생
+    - `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
+- **프로모션 확인**
+    - `applyPromotion(int quantity, int promotionThreshold)`: 구매 수량과 프로모션 조건에 따라 무료 증정 수량을 반환
+
 ### Product
 - **상품의 기본 정보 관리**
     - `name`: 상품명
@@ -18,24 +42,15 @@
     - `stock`: 현재 재고 수량
       - 재고의 수량은 음수가 될 수 없다.
       - 재고의 수량은 어떤 범위의 숫자든 상관 없어야 한다.
-    - `promotionStock`: 프로모션용 재고 수량
-      - 재고의 수량은 음수가 될 수 없다.
-      - 재고의 수량은 어떤 범위의 숫자든 상관 없어야 한다.
+    - `promotionProduct`: 프로모션용 상품
 - **재고 확인 및 감소**
     - `hasSufficientStock(int quantity)`: 구매 수량이 재고 수량을 초과하지 않는지 확인
       - 재고 수량을 구매 수량이 초과할 경우 예외 발생
     - `decrementStock(int quantity)`: 구매된 수량만큼 재고를 차감
-    - `decrementPromotionStock(int quantity)`: 프로모션용 재고를 우선적으로 차감
+      - 프로모션용 재고를 우선적으로 차감
 - **프로모션 확인**
     - `isEligibleForPromotion()`: 해당 상품이 프로모션 대상인지 확인
-    - `applyPromotion(int quantity, int promotionThreshold)`: 구매 수량과 프로모션 조건에 따라 무료 증정 수량을 반환
-
-### PromotionType
-- **프로모션 정책 관리**
-    - `type`: 프로모션 유형 (1+1, 2+1 등)
-    - `startDate`, `endDate`: 프로모션 시작일과 종료일 관리
-    - `isWithinPromotionPeriod()`: 현재 날짜가 프로모션 기간 내에 있는지 확인
-    - `calculatePromotionDiscount(Product product, int quantity)`: 프로모션 조건에 따라 할인을 적용할 수 있는 수량을 계산
+      - 구매 수량과 프로모션 조건에 따라 무료 증정 수량을 반환
 
 ### Order
 - **구매 요청 관리**
