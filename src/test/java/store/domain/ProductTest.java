@@ -122,4 +122,14 @@ class ProductTest {
             softly.assertThat(product.decrementStock(quantity)).isEqualTo(5-quantity);
         });
     }
+
+    @DisplayName("프로모션용 재고를 우선적으로 차감")
+    @ParameterizedTest(name = "구매 수량({0}), 프로모션 재고 수량(5)")
+    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+    void testDecrementPromotionStock(int quantity) {
+        Product product = new Product("콜라", 1000, 5, 5);
+        assertSoftly(softly -> {
+            softly.assertThat(product.decrementPromotionStock(quantity)).isEqualTo(5-quantity);
+        });
+    }
 }
