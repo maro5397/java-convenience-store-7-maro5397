@@ -6,7 +6,7 @@
 
 ## 도메인 객체 기능 명세
 
-### Receipt
+### PromotionResult
 - **프로모션 정책을 적용했을때 결과**
     - `freeItemCount`: 프로모션으로 받을 수 있는 상품 개수
     - `paidItemCount`: 프로모션 적용 후 결제해야하는 상품 개수

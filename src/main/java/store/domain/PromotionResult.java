@@ -1,11 +1,11 @@
 package store.domain;
 
-public class Receipt {
-    int freeItemCount;
-    int paidItemCount;
-    int noneDiscountItemCount;
+public class PromotionResult {
+    private final int freeItemCount;
+    private final int paidItemCount;
+    private final int noneDiscountItemCount;
 
-    public Receipt(int freeItemCount, int paidItemCount, int noneDiscountItemCount) {
+    public PromotionResult(int freeItemCount, int paidItemCount, int noneDiscountItemCount) {
         this.freeItemCount = freeItemCount;
         this.paidItemCount = paidItemCount;
         this.noneDiscountItemCount = noneDiscountItemCount;
