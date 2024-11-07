@@ -26,6 +26,10 @@ public class PromotionProduct {
         return new PromotionResult(promotionResult.getFreeItemCount(), paidItemCount, noneDiscountItemCount);
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public int getStock() {
         return stock;
     }
