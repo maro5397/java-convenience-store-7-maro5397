@@ -54,20 +54,25 @@
     - `isEligibleForPromotion()`: 해당 상품이 프로모션 대상인지 확인
       - 구매 수량과 프로모션 조건에 따라 무료 증정 수량을 반환
 
-### Order
+### Orders
 - **구매 요청 관리**
-    - `items`: 고객이 구매한 상품과 수량 목록
-    - `addProduct(Product product, int quantity)`: 고객이 구매 요청한 상품을 목록에 추가
-    - `calculateTotalPrice()`: 구매한 상품의 가격과 수량을 곱해 총구매액을 계산
+    - `orders`: 고객이 구매한 상품과 수량 목록
+    - `addOrder(Product product, int quantity)`: 고객이 구매 요청한 상품을 목록에 추가
+    - `getTotalPrice()`: 구매한 상품의 가격과 수량을 곱해 총구매액을 계산
 - **프로모션 할인 적용**
-    - `applyPromotionDiscount()`: 프로모션 할인 조건을 충족하는 상품에 대해 무료 증정 혜택을 적용하고 할인 금액을 계산
+    - `getPromotionDiscount()`: 프로모션 할인 조건을 충족하는 상품에 대해 무료 증정 혜택을 적용하고 할인 금액을 계산
 - **멤버십 할인 적용**
-    - `applyMembershipDiscount()`: 멤버십 할인을 적용하여 프로모션 미적용 금액의 30%를 할인하고, 최대 8,000원 한도를 고려해 최종 결제 금액 산출
+    - `getMembershipDiscount()`: 멤버십 할인을 적용하여 프로모션 미적용 금액의 30%를 할인하고, 최대 8,000원 한도를 고려해 최종 결제 금액 산출
+- **주문 반환**
+    - `getOrderByProductName()`: 주문에 대한 결과를 상품 이름을 기준으로 탐색하여 반환
 
-### Customer
-- **구매자 정보 관리**
-    - `isMember`: 멤버십 회원 여부 확인
-    - `getMembershipDiscountAmount()`: 멤버십 할인 금액 계산 및 한도 적용
+### Order
+- **주문 관리**
+    - `product`: 고객이 구매할 상품
+    - `quantity`: 고객이 구매할 상품개수
+    - `promotionResult`: 프로모션 해택 적용 결과
+- **프로모션 적용**
+    - `applyPromotionDiscount()`: 프로모션 적용 후 결과를 필드에 기록 
 
 ---
 ### 실행 예시
