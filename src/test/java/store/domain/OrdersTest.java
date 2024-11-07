@@ -81,4 +81,58 @@ class OrdersTest {
             softly.assertThat(orderByProductName2.getQuantity()).isEqualTo(quantity2);
         });
     }
+
+    @DisplayName("고객이 구매 요청한 상품 총액")
+    @ParameterizedTest(name = "상품이름: {0}, 구매수량: {1}, 상품이름: {2}, 구매수량: {3}, 총액: {4}")
+    @CsvSource(
+            value = {
+                    "컵라면,1,에너지바,3,7700",
+                    "콜라,10,사이다,8,18000",
+                    "감자칩,5,초코바,5,13500"
+            }
+    )
+    void testTotalPrice(String productName1, int quantity1, String productName2, int quantity2, int total) {
+        Orders orders = new Orders();
+        orders.addOrder(products.get(productName1), quantity1);
+        orders.addOrder(products.get(productName2), quantity2);
+        assertSoftly(softly -> {
+            softly.assertThat(orders.getTotalPrice()).isEqualTo(total);
+        });
+    }
+
+    @DisplayName("고객이 구매 요청한 상품의 프로모션 할인 총액")
+    @ParameterizedTest(name = "상품이름: {0}, 구매수량: {1}, 상품이름: {2}, 구매수량: {3}, 할인 총액: {4}")
+    @CsvSource(
+            value = {
+                    "콜라,10,사이다,8,5000",
+                    "감자칩,5,초코바,5,5400",
+                    "컵라면,1,에너지바,3,0"
+            }
+    )
+    void testPromotionDiscount(String productName1, int quantity1, String productName2, int quantity2, int discount) {
+        Orders orders = new Orders();
+        orders.addOrder(products.get(productName1), quantity1);
+        orders.addOrder(products.get(productName2), quantity2);
+        assertSoftly(softly -> {
+            softly.assertThat(orders.getPromotionDiscount()).isEqualTo(discount);
+        });
+    }
+
+    @DisplayName("고객이 구매 요청한 상품의 맴버쉽 할인 총액")
+    @ParameterizedTest(name = "상품이름: {0}, 구매수량: {1}, 상품이름: {2}, 구매수량: {3}, 할인 총액: {4}")
+    @CsvSource(
+            value = {
+                    "정식도시락,8,콜라,20,8000",
+                    "감자칩,5,초코바,5,810",
+                    "컵라면,1,에너지바,3,2310"
+            }
+    )
+    void testMembershipDiscount(String productName1, int quantity1, String productName2, int quantity2, int discount) {
+        Orders orders = new Orders();
+        orders.addOrder(products.get(productName1), quantity1);
+        orders.addOrder(products.get(productName2), quantity2);
+        assertSoftly(softly -> {
+            softly.assertThat(orders.getMembershipDiscount()).isEqualTo(discount);
+        });
+    }
 }
