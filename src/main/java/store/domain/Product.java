@@ -30,10 +30,11 @@ public class Product {
         return promotionProduct;
     }
 
-    public void decrementStock(int quantity) {
+    public PromotionResult decrementStock(int quantity) {
         hasSufficientStock(quantity);
         PromotionResult promotionResult = this.promotionProduct.decrementStock(quantity);
         stock -= promotionResult.getNoneDiscountItemCount();
+        return promotionResult;
     }
 
     private void validate() {
