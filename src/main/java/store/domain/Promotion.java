@@ -35,6 +35,10 @@ public class Promotion {
                 freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount);
     }
 
+    public boolean canApplyPromotion(int quantity) {
+        return quantity % (get + buy) - buy == 0;
+    }
+
     private boolean isWithinPromotionPeriod() {
         return this.promotionStrategy.getPromotionConditionChecker();
     }
