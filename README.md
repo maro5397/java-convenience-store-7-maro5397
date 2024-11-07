@@ -18,6 +18,7 @@
     - `startDate`, `endDate`: 프로모션 시작일과 종료일 관리
     - `isWithinPromotionPeriod(LocalDateTime now)`: 현재 날짜가 프로모션 기간 내에 있는지 확인
     - `calculatePromotionDiscount(Product product, int quantity)`: 프로모션 조건에 따라 할인을 적용할 수 있는 수량을 계산
+    - `canApplyPromotion(int quantity)`: 프로모션 추가 적용이 가능한지 유무를 확인
 
 ### PromotionProduct
 - **상품의 기본 정보 관리**
