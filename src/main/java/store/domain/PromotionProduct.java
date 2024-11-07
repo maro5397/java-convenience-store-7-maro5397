@@ -15,15 +15,15 @@ public class PromotionProduct {
 
     public PromotionResult decrementStock(int quantity) {
         PromotionResult promotionResult = promotion.calculatePromotionDiscount(stock, quantity);
-        int paidItemCount = promotionResult.getPaidItemCount();
-        int noneDiscountItemCount = promotionResult.getNoneDiscountItemCount();
-        stock -= promotionResult.getFreeItemCount() + promotionResult.getPaidItemCount();
-        for(int i = 0; i < promotionResult.getNoneDiscountItemCount() && stock != 0; i++) {
-            stock -= 1;
-            paidItemCount += 1;
-            noneDiscountItemCount -= 1;
+        int productConsumeCount = promotionResult.getProductConsumeCount();
+        int promotionProductConsumeCount = promotionResult.getPromotionProductConsumeCount();
+        for (int i = 0; i < promotionResult.getProductConsumeCount() && stock > promotionProductConsumeCount; i++) {
+            promotionProductConsumeCount += 1;
+            productConsumeCount -= 1;
         }
-        return new PromotionResult(promotionResult.getFreeItemCount(), paidItemCount, noneDiscountItemCount);
+        stock -= promotionProductConsumeCount;
+        return new PromotionResult(promotionResult.getFreeItemCount(), promotionResult.getPaidItemCount(),
+                promotionProductConsumeCount, productConsumeCount);
     }
 
     public int getPrice() {
