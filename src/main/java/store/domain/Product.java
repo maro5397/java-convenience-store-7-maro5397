@@ -31,6 +31,11 @@ public class Product {
     }
 
     public PromotionResult decrementStock(int quantity) {
+        if (this.promotionProduct == null) {
+            hasSufficientStock(quantity);
+            stock -= quantity;
+            return new PromotionResult(0, 0, quantity);
+        }
         hasSufficientStock(quantity);
         PromotionResult promotionResult = this.promotionProduct.decrementStock(quantity);
         stock -= promotionResult.getNoneDiscountItemCount();
@@ -69,8 +74,10 @@ public class Product {
     }
 
     private void hasSufficientStock(int quantity) {
-        int totalStock = stock + this.promotionProduct.getStock();
-        if(totalStock < quantity) {
+        if (this.promotionProduct == null && stock < quantity) {
+            throw new IllegalArgumentException("[ERROR] 재고 수량이 충분하지 않습니다.");
+        }
+        if (this.promotionProduct != null && stock + this.promotionProduct.getStock() < quantity) {
             throw new IllegalArgumentException("[ERROR] 재고 수량이 충분하지 않습니다.");
         }
     }
