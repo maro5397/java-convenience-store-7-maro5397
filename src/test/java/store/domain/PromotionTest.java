@@ -14,6 +14,20 @@ class PromotionTest {
     private Promotion softDrinkPromotion;
     private PromotionStrategy promotionStrategy;
 
+    private void settingPromotion(String dateTime) {
+        promotionStrategy = new MockPromotionStrategy(
+                LocalDateTime.parse("2024-01-01 00:00", formatter),
+                LocalDateTime.parse("2024-12-31 23:59", formatter),
+                LocalDateTime.parse(dateTime, formatter)
+        );
+        softDrinkPromotion = new Promotion(
+                "탄산2+1",
+                2,
+                2,
+                promotionStrategy
+        );
+    }
+
     @DisplayName("현재 날짜가 프로모션 기간 내")
     @ParameterizedTest(name = "프로모션 날짜: {1}")
     @CsvSource(
@@ -50,18 +64,36 @@ class PromotionTest {
         });
     }
 
-    private void settingPromotion(String dateTime) {
-        promotionStrategy = new MockPromotionStrategy(
-                LocalDateTime.parse("2024-01-01 00:00", formatter),
-                LocalDateTime.parse("2024-12-31 23:59", formatter),
-                LocalDateTime.parse(dateTime, formatter)
-        );
-        softDrinkPromotion = new Promotion(
-                "탄산2+1",
-                2,
-                2,
-                promotionStrategy
-        );
+    @DisplayName("프로모션 추가 적용 가능")
+    @ParameterizedTest(name = "구매 수량: {0}")
+    @CsvSource(
+            value = {
+                    "2,2024-11-06 00:00",
+                    "6,2024-11-06 00:00",
+                    "10,2024-11-06 00:00"
+            }
+    )
+    void testCanApplyPromotion(int quantity, String dateTime) {
+        settingPromotion(dateTime);
+        assertSoftly(softly -> {
+            softly.assertThat(softDrinkPromotion.canApplyPromotion(quantity)).isTrue();
+        });
+    }
+
+    @DisplayName("프로모션 추가 적용 불가")
+    @ParameterizedTest(name = "프로모션 날짜: {0}")
+    @CsvSource(
+            value = {
+                    "3,2024-11-06 00:00",
+                    "7,2024-11-06 00:00",
+                    "9,2024-11-06 00:00"
+            }
+    )
+    void testCannotApplyPromotion(int quantity, String dateTime) {
+        settingPromotion(dateTime);
+        assertSoftly(softly -> {
+            softly.assertThat(softDrinkPromotion.canApplyPromotion(quantity)).isFalse();
+        });
     }
 
     private class MockPromotionStrategy implements PromotionStrategy {
