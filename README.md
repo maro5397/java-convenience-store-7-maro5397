@@ -70,6 +70,7 @@
 - **주문 관리**
     - `product`: 고객이 구매할 상품
     - `quantity`: 고객이 구매할 상품개수
+      - 상품 개수는 0이 될 수 없음
     - `promotionResult`: 프로모션 해택 적용 결과
 - **프로모션 적용**
     - `applyPromotionDiscount()`: 프로모션 적용 후 결과를 필드에 기록 
