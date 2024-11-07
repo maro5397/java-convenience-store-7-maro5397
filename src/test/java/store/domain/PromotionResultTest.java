@@ -12,15 +12,18 @@ class PromotionResultTest {
     @CsvSource(
             value = {"10,11,12", "13,14,15"}
     )
-    void testProductFieldManage(int freeItemCount, int paidItemCount, int noneDiscountItemCount) {
-        PromotionResult promotionResult = new PromotionResult(freeItemCount, paidItemCount, noneDiscountItemCount);
+    void testProductFieldManage(int freeItemCount, int paidItemCount, int quantity) {
+        PromotionResult promotionResult = new PromotionResult(freeItemCount, paidItemCount,
+                freeItemCount + paidItemCount, quantity - (freeItemCount + paidItemCount));
         assertSoftly(softly -> {
             softly.assertThat(promotionResult.getFreeItemCount())
                     .isEqualTo(freeItemCount);
             softly.assertThat(promotionResult.getPaidItemCount())
                     .isEqualTo(paidItemCount);
-            softly.assertThat(promotionResult.getNoneDiscountItemCount())
-                    .isEqualTo(noneDiscountItemCount);
+            softly.assertThat(promotionResult.getPromotionProductConsumeCount())
+                    .isEqualTo(freeItemCount + paidItemCount);
+            softly.assertThat(promotionResult.getProductConsumeCount())
+                    .isEqualTo(quantity - (freeItemCount + paidItemCount));
         });
     }
 }
