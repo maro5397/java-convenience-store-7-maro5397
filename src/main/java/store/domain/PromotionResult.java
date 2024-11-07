@@ -3,12 +3,15 @@ package store.domain;
 public class PromotionResult {
     private final int freeItemCount;
     private final int paidItemCount;
-    private final int noneDiscountItemCount;
+    private final int promotionProductConsumeCount;
+    private final int productConsumeCount;
 
-    public PromotionResult(int freeItemCount, int paidItemCount, int noneDiscountItemCount) {
+    public PromotionResult(int freeItemCount, int paidItemCount,
+                           int promotionProductConsumeCount, int productConsumeCount) {
         this.freeItemCount = freeItemCount;
         this.paidItemCount = paidItemCount;
-        this.noneDiscountItemCount = noneDiscountItemCount;
+        this.promotionProductConsumeCount = promotionProductConsumeCount;
+        this.productConsumeCount = productConsumeCount;
     }
 
     public int getFreeItemCount() {
@@ -19,7 +22,15 @@ public class PromotionResult {
         return paidItemCount;
     }
 
-    public int getNoneDiscountItemCount() {
-        return noneDiscountItemCount;
+    public int getPromotionProductConsumeCount() {
+        return promotionProductConsumeCount;
+    }
+
+    public int getProductConsumeCount() {
+        return productConsumeCount;
+    }
+
+    public int getNoneDiscountPromotionStockCount() {
+        return promotionProductConsumeCount - freeItemCount - paidItemCount;
     }
 }
