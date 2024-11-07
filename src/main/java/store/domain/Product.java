@@ -34,11 +34,11 @@ public class Product {
         if (this.promotionProduct == null) {
             hasSufficientStock(quantity);
             stock -= quantity;
-            return new PromotionResult(0, 0, quantity);
+            return new PromotionResult(0, 0, 0, quantity);
         }
         hasSufficientStock(quantity);
         PromotionResult promotionResult = this.promotionProduct.decrementStock(quantity);
-        stock -= promotionResult.getNoneDiscountItemCount();
+        stock -= promotionResult.getProductConsumeCount();
         return promotionResult;
     }
 
