@@ -24,14 +24,15 @@ public class Promotion {
         int freeItemCount = 0;
         int paidItemCount = 0;
         if (!isWithinPromotionPeriod()) {
-            return new PromotionResult(freeItemCount, paidItemCount, quantity);
+            return new PromotionResult(0, 0, 0, quantity);
         }
         while (stock - freeItemCount - paidItemCount >= get + buy
                 && quantity - freeItemCount - paidItemCount >= get + buy) {
             freeItemCount += get;
             paidItemCount += buy;
         }
-        return new PromotionResult(freeItemCount, paidItemCount, quantity - paidItemCount - freeItemCount);
+        return new PromotionResult(freeItemCount, paidItemCount,
+                freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount);
     }
 
     private boolean isWithinPromotionPeriod() {
