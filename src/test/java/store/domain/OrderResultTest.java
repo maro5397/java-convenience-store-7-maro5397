@@ -13,12 +13,12 @@ class PromotionResultTest {
             value = {"10,11,12", "13,14,15"}
     )
     void testProductFieldManage(int freeItemCount, int paidItemCount, int quantity) {
-        PromotionResult promotionResult = new PromotionResult(freeItemCount, paidItemCount,
+        OrderResult promotionResult = new OrderResult(freeItemCount, paidItemCount,
                 freeItemCount + paidItemCount, quantity - (freeItemCount + paidItemCount));
         assertSoftly(softly -> {
-            softly.assertThat(promotionResult.getFreeItemCount())
+            softly.assertThat(promotionResult.getPromotionApplyfreeItemCount())
                     .isEqualTo(freeItemCount);
-            softly.assertThat(promotionResult.getPaidItemCount())
+            softly.assertThat(promotionResult.getPromotionApplypaidItemCount())
                     .isEqualTo(paidItemCount);
             softly.assertThat(promotionResult.getPromotionProductConsumeCount())
                     .isEqualTo(freeItemCount + paidItemCount);
