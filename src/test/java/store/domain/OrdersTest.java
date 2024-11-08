@@ -29,9 +29,6 @@ class OrdersTest {
                 quantity1);
         this.orders.addOrder(product2, this.promotionRepository.getPromotionWithName(product2.getPromotion()),
                 quantity2);
-        for (Order order : this.orders.getOrders()) {
-            order.consumePromotionProduct();
-        }
     }
 
     @DisplayName("고객이 구매 요청한 상품을 주문목록에 추가")
@@ -112,7 +109,6 @@ class OrdersTest {
         this.orders.addOrder(product, this.promotionRepository.getPromotionWithName(product.getPromotion()),
                 quantity);
         Order order = this.orders.getOrders().getFirst();
-        order.consumePromotionProduct();
         order.applyConsumeStock();
         assertSoftly(softly -> {
             softly.assertThat(order.getProduct().getStock() + order.getProduct().getPromotionStock())
@@ -132,7 +128,6 @@ class OrdersTest {
         this.orders.addOrder(product, this.promotionRepository.getPromotionWithName(product.getPromotion()),
                 quantity);
         Order order = this.orders.getOrders().getFirst();
-        order.consumePromotionProduct();
         order.applyConsumeStock();
         assertSoftly(softly -> {
             softly.assertThat(order.getProduct().getStock()).isEqualTo(productStock);
