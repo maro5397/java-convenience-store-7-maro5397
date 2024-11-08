@@ -33,11 +33,6 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public OrderResult applyPromotionProduct(Order order) {
-        return order.consumePromotionProduct();
-    }
-
-    @Override
     public Order addApplyPromotionProduct(String productName, int additionalQuantity) {
         return null;
     }

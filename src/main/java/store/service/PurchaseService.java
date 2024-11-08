@@ -11,8 +11,6 @@ public interface PurchaseService {
 
     Orders makeOrders(String orderInput);
 
-    OrderResult applyPromotionProduct(Order order);
-
     Order addApplyPromotionProduct(String productName, int additionalQuantity);
 
     void deleteNonePromotionProduct(Order order);
