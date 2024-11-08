@@ -25,13 +25,9 @@
 - **주문 생성**
   - `makeOrders(String orderInput)`: 입력받은 주문을 Orders객체로 반환
 - **프로모션 할인 적용**
-  - `applyPromotionProduct(Order order)`: 각 주문에 프로모션 할인 적용 후 OrderResult 반환
-- **프로모션 추가 적용**
-  - `addApplyPromotionProduct(String productName, int additionalQuantity)`: 추가 수량 만큼 프로모션을 적용
+  - `applyAdditionalPromotionProduct(Order order)`: 주문에 프로모션 할인 추가 적용
 - **프로모션 미적용 상품 제외**
   - `deleteNonePromotionProduct(Order order)`: 프로모션 수량 부족으로 프로모션 미적용 상품 제외
-- **맴버쉽 할인 적용**
-  - `calculateMembershipDiscount(OrderResult promotionResult)`: 맴버쉽 할인 적용
 
 ## 도메인 객체 기능 명세
 
