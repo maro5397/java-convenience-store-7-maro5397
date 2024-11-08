@@ -6,20 +6,30 @@ import java.util.List;
 public class Orders {
     private final List<Order> orders = new ArrayList<>();
 
-    public void addOrder(Product product, int quantity) {
-        Order order = new Order(product, quantity);
-        order.applyPromotionDiscount();
+    public void addOrder(Product product, Promotion promotion, int quantity) {
+        Order order = new Order(product, promotion, quantity);
         orders.add(order);
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public int getTotalQuantity() {
+        int total = 0;
+        for (Order order : orders) {
+            total += order.getQuantity();
+        }
+        return total;
     }
 
     public int getTotalPrice() {
         int total = 0;
         for (Order order : orders) {
-            if (order.getPromotionResult().getPromotionProductConsumeCount() != 0) {
-                total += order.getPromotionResult().getPromotionProductConsumeCount() * order.getProduct()
-                        .getPromotionProduct().getPrice();
+            if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
+                total += order.getOrderResult().getPromotionProductConsumeCount() * order.getProduct().getPrice();
             }
-            total += order.getPromotionResult().getProductConsumeCount() * order.getProduct().getPrice();
+            total += order.getOrderResult().getProductConsumeCount() * order.getProduct().getPrice();
         }
         return total;
     }
@@ -27,33 +37,32 @@ public class Orders {
     public int getPromotionDiscount() {
         int discountPrice = 0;
         for (Order order : orders) {
-            if (order.getPromotionResult().getPromotionProductConsumeCount() != 0) {
+            if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
                 discountPrice +=
-                        order.getPromotionResult().getFreeItemCount() * order.getProduct().getPromotionProduct()
-                                .getPrice();
+                        order.getOrderResult().getPromotionApplyfreeItemCount() * order.getProduct().getPrice();
             }
         }
         return discountPrice;
     }
 
-    public int getMembershipDiscount() {
+    public int getMembershipDiscount(boolean isMembership) {
+        if (!isMembership) {
+            return 0;
+        }
         int discountPrice = 0;
         for (Order order : orders) {
-            if(order.getPromotionResult().getPromotionProductConsumeCount() != 0) {
-                int noneDiscountPromotionStockCount = order.getPromotionResult().getNoneDiscountPromotionStockCount();
-                discountPrice += noneDiscountPromotionStockCount * order.getProduct().getPromotionProduct().getPrice();
+            if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
+                int noneDiscountPromotionStockCount = order.getOrderResult().getNoneDiscountPromotionStockCount();
+                discountPrice += noneDiscountPromotionStockCount * order.getProduct().getPrice();
             }
-            discountPrice += order.getPromotionResult().getProductConsumeCount() * order.getProduct().getPrice();
+            discountPrice += order.getOrderResult().getProductConsumeCount() * order.getProduct().getPrice();
         }
         return Math.min((int) (discountPrice * 0.3), 8000);
     }
 
-    public Order getOrderByProductName(String name) {
+    public void applyConsumeStock() {
         for (Order order : orders) {
-            if (order.getProduct().getName().equals(name)) {
-                return order;
-            }
+            order.applyConsumeStock();
         }
-        throw new RuntimeException("[ERROR] 찾는 주문이 없습니다.");
     }
 }
