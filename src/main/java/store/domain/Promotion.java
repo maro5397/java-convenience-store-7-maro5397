@@ -20,23 +20,27 @@ public class Promotion {
         this.promotionStrategy = promotionStrategy;
     }
 
-    public PromotionResult calculatePromotionDiscount(int stock, int quantity) {
+    public int getGet() {
+        return get;
+    }
+
+    public OrderResult calculatePromotionDiscount(int promotionStock, int quantity) {
         int freeItemCount = 0;
         int paidItemCount = 0;
         if (!isWithinPromotionPeriod()) {
-            return new PromotionResult(0, 0, 0, quantity);
+            return new OrderResult(0, 0, 0, quantity);
         }
-        while (stock - freeItemCount - paidItemCount >= get + buy
+        while (promotionStock - freeItemCount - paidItemCount >= get + buy
                 && quantity - freeItemCount - paidItemCount >= get + buy) {
             freeItemCount += get;
             paidItemCount += buy;
         }
-        return new PromotionResult(freeItemCount, paidItemCount,
+        return new OrderResult(freeItemCount, paidItemCount,
                 freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount);
     }
 
-    public boolean canApplyPromotion(int quantity) {
-        return quantity % (get + buy) - buy == 0;
+    public boolean canApplyPromotion(int quantity, int remainingPromotionStock) {
+        return quantity % (get + buy) - buy == 0 && remainingPromotionStock >= get;
     }
 
     private boolean isWithinPromotionPeriod() {
