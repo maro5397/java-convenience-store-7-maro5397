@@ -50,7 +50,7 @@ public class PurchaseController {
     private void suggestAdditionalPromotionDiscount(Order order) {
         boolean confirmationFreeAdditionInput = this.inputView.getConfirmationFreeAdditionInput(order);
         if (confirmationFreeAdditionInput) {
-            order.applyAdditionalPromotion();
+            this.purchaseService.applyAdditionalPromotionProduct(order);
         }
     }
 
@@ -65,7 +65,7 @@ public class PurchaseController {
     private void suggestNonePromotionDiscount(Order order) {
         boolean confirmationNonePromotionInput = this.inputView.getConfirmationNonePromotionInput(order);
         if (!confirmationNonePromotionInput) {
-            order.deleteNonePromotionAppliedProductCount();
+            this.purchaseService.deleteNonePromotionProduct(order);
         }
     }
 
