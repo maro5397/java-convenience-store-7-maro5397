@@ -4,13 +4,18 @@ public class Product {
     private final String name;
     private final int price;
     private int stock;
-    private final PromotionProduct promotionProduct;
+    private int promotionStock;
+    private String promotion;
 
-    public Product(String name, int price, int stock, PromotionProduct promotionProduct) {
+    public Product(String name, int price, int stock, int promotionStock, String promotion) {
         this.name = name;
         this.price = price;
         this.stock = stock;
-        this.promotionProduct = promotionProduct;
+        this.promotionStock = promotionStock;
+        this.promotion = promotion;
+        if (promotion.equals("null")) {
+            this.promotion = "";
+        }
         validate();
     }
 
@@ -26,26 +31,27 @@ public class Product {
         return stock;
     }
 
-    public PromotionProduct getPromotionProduct() {
-        return promotionProduct;
+    public int getPromotionStock() {
+        return promotionStock;
     }
 
-    public PromotionResult decrementStock(int quantity) {
-        if (this.promotionProduct == null) {
-            hasSufficientStock(quantity);
-            stock -= quantity;
-            return new PromotionResult(0, 0, 0, quantity);
-        }
+    public String getPromotion() {
+        return promotion;
+    }
+
+    public void decrementStock(int quantity) {
         hasSufficientStock(quantity);
-        PromotionResult promotionResult = this.promotionProduct.decrementStock(quantity);
-        stock -= promotionResult.getProductConsumeCount();
-        return promotionResult;
+        stock -= quantity;
+    }
+
+    public void decrementPromotionStock(int quantity) {
+        hasSufficientPromotionStock(quantity);
+        promotionStock -= quantity;
     }
 
     private void validate() {
         validateName();
         validatePrice();
-        validateStock();
         validateStock();
     }
 
@@ -68,16 +74,19 @@ public class Product {
     }
 
     private void validateStock() {
-        if (this.stock < 0) {
+        if (this.stock < 0 || this.promotionStock < 0) {
             throw new IllegalArgumentException("[ERROR] 재고는 음수가 될 수 없습니다.");
         }
     }
 
     private void hasSufficientStock(int quantity) {
-        if (this.promotionProduct == null && stock < quantity) {
+        if (stock < quantity) {
             throw new IllegalArgumentException("[ERROR] 재고 수량이 충분하지 않습니다.");
         }
-        if (this.promotionProduct != null && stock + this.promotionProduct.getStock() < quantity) {
+    }
+
+    private void hasSufficientPromotionStock(int quantity) {
+        if (promotionStock < quantity) {
             throw new IllegalArgumentException("[ERROR] 재고 수량이 충분하지 않습니다.");
         }
     }
