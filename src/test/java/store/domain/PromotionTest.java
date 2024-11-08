@@ -38,11 +38,11 @@ class PromotionTest {
     )
     void testWithinPromotionPeriod(int quantity, String dateTime, int freeItemCount, int paidItemCount) {
         settingPromotion(dateTime);
-        PromotionResult promotionResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
+        OrderResult orderResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
         LocalDateTime now = LocalDateTime.parse(dateTime, formatter);
         assertSoftly(softly -> {
-            softly.assertThat(promotionResult.getFreeItemCount()).isEqualTo(freeItemCount);
-            softly.assertThat(promotionResult.getPaidItemCount()).isEqualTo(paidItemCount);
+            softly.assertThat(orderResult.getPromotionApplyfreeItemCount()).isEqualTo(freeItemCount);
+            softly.assertThat(orderResult.getPromotionApplypaidItemCount()).isEqualTo(paidItemCount);
         });
     }
 
@@ -57,10 +57,10 @@ class PromotionTest {
     )
     void testWithoutPromotionPeriod(int quantity, String dateTime) {
         settingPromotion(dateTime);
-        PromotionResult promotionResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
+        OrderResult orderResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
         assertSoftly(softly -> {
-            softly.assertThat(promotionResult.getFreeItemCount()).isEqualTo(0);
-            softly.assertThat(promotionResult.getPaidItemCount()).isEqualTo(0);
+            softly.assertThat(orderResult.getPromotionApplyfreeItemCount()).isEqualTo(0);
+            softly.assertThat(orderResult.getPromotionApplypaidItemCount()).isEqualTo(0);
         });
     }
 
@@ -76,7 +76,7 @@ class PromotionTest {
     void testCanApplyPromotion(int quantity, String dateTime) {
         settingPromotion(dateTime);
         assertSoftly(softly -> {
-            softly.assertThat(softDrinkPromotion.canApplyPromotion(quantity)).isTrue();
+            softly.assertThat(softDrinkPromotion.canApplyPromotion(quantity, 10)).isTrue();
         });
     }
 
@@ -92,7 +92,7 @@ class PromotionTest {
     void testCannotApplyPromotion(int quantity, String dateTime) {
         settingPromotion(dateTime);
         assertSoftly(softly -> {
-            softly.assertThat(softDrinkPromotion.canApplyPromotion(quantity)).isFalse();
+            softly.assertThat(softDrinkPromotion.canApplyPromotion(quantity, 10)).isFalse();
         });
     }
 
