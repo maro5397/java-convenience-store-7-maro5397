@@ -11,6 +11,7 @@ public class Order {
         this.product = product;
         this.promotion = promotion;
         this.quantity = quantity;
+        consumePromotionProduct();
     }
 
     public Product getProduct() {
@@ -31,6 +32,31 @@ public class Order {
 
     public boolean getCanApplyAdditionalPromotion() {
         return canApplyAdditionalPromotion;
+    }
+
+    public void applyAdditionalPromotion() {
+        quantity += promotion.getGet();
+        consumePromotionProduct();
+    }
+
+    public void deleteNonePromotionAppliedProductCount() {
+        quantity -= this.orderResult.getPromotionProductConsumeCount()
+                + this.orderResult.getProductConsumeCount()
+                - this.orderResult.getPromotionApplyfreeItemCount()
+                - this.orderResult.getPromotionApplypaidItemCount();
+        consumePromotionProduct();
+    }
+
+    public void applyConsumeStock() {
+        if (!this.product.getPromotion().isEmpty()) {
+            this.product.decrementPromotionStock(this.orderResult.getPromotionProductConsumeCount());
+        }
+        this.product.decrementStock(this.orderResult.getProductConsumeCount());
+    }
+
+    private void canGetAdditionalProductByPromotion() {
+        this.canApplyAdditionalPromotion = this.promotion.canApplyPromotion(quantity,
+                this.product.getPromotionStock() - this.orderResult.getPromotionProductConsumeCount());
     }
 
     public OrderResult consumePromotionProduct() {
@@ -55,28 +81,5 @@ public class Order {
                 promotionProductConsumeCount, productConsumeCount);
         canGetAdditionalProductByPromotion();
         return this.orderResult;
-    }
-
-    public void applyAdditionalPromotion() {
-        quantity += promotion.getGet();
-    }
-
-    public void deleteNonePromotionAppliedProductCount() {
-        quantity -= this.orderResult.getPromotionProductConsumeCount()
-                + this.orderResult.getProductConsumeCount()
-                - this.orderResult.getPromotionApplyfreeItemCount()
-                - this.orderResult.getPromotionApplypaidItemCount();
-    }
-
-    public void applyConsumeStock() {
-        if (!this.product.getPromotion().isEmpty()) {
-            this.product.decrementPromotionStock(this.orderResult.getPromotionProductConsumeCount());
-        }
-        this.product.decrementStock(this.orderResult.getProductConsumeCount());
-    }
-
-    private void canGetAdditionalProductByPromotion() {
-        this.canApplyAdditionalPromotion = this.promotion.canApplyPromotion(quantity,
-                this.product.getPromotionStock() - this.orderResult.getPromotionProductConsumeCount());
     }
 }
