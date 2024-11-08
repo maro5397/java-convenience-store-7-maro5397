@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import store.domain.Order;
 import store.domain.Orders;
 import store.domain.Product;
-import store.domain.OrderResult;
 import store.domain.Promotion;
 import store.repository.ProductRepository;
 import store.repository.PromotionRepository;
@@ -33,18 +32,13 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public Order addApplyPromotionProduct(String productName, int additionalQuantity) {
-        return null;
+    public void applyAdditionalPromotionProduct(Order order) {
+        order.applyAdditionalPromotion();
     }
 
     @Override
     public void deleteNonePromotionProduct(Order order) {
-        return;
-    }
-
-    @Override
-    public int calculateMembershipDiscount(OrderResult promotionResult) {
-        return 0;
+        order.deleteNonePromotionAppliedProductCount();
     }
 
     private class OrderInputToOrdersUtil {
