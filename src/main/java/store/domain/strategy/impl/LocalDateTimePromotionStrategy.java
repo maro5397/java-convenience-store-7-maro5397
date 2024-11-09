@@ -1,18 +1,17 @@
 package store.domain.strategy.impl;
 
 import camp.nextstep.edu.missionutils.DateTimes;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import store.domain.strategy.PromotionStrategy;
 
 public class LocalDateTimePromotionStrategy implements PromotionStrategy {
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
 
     public LocalDateTimePromotionStrategy(String startDate, String endDate) {
-        this.startDate = LocalDateTime.parse(startDate + " 00:00", formatter);;
-        this.endDate = LocalDateTime.parse(endDate + " 00:00", formatter);;
+        this.startDate = LocalDate.parse(startDate).atStartOfDay();
+        this.endDate = LocalDate.parse(endDate).atStartOfDay();
     }
 
     @Override
