@@ -2,6 +2,7 @@ package store.domain;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.rmi.NoSuchObjectException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,7 +23,8 @@ class OrdersTest {
         this.orders = new Orders();
     }
 
-    void settingOrders(String productName1, int quantity1, String productName2, int quantity2) {
+    void settingOrders(String productName1, int quantity1, String productName2, int quantity2)
+            throws NoSuchObjectException {
         Product product1 = this.productRepository.getProductWithName(productName1);
         Product product2 = this.productRepository.getProductWithName(productName2);
         this.orders.addOrder(product1, this.promotionRepository.getPromotionWithName(product1.getPromotion()),
@@ -40,7 +42,8 @@ class OrdersTest {
                     "컵라면,1,에너지바,3"
             }
     )
-    void testAddProductInOrders(String productName1, int quantity1, String productName2, int quantity2) {
+    void testAddProductInOrders(String productName1, int quantity1, String productName2, int quantity2)
+            throws NoSuchObjectException {
         settingOrders(productName1, quantity1, productName2, quantity2);
         Order orderByProductName1 = this.orders.getOrders().getFirst();
         Order orderByProductName2 = this.orders.getOrders().getLast();
@@ -61,7 +64,8 @@ class OrdersTest {
                     "감자칩,5,초코바,5,13500"
             }
     )
-    void testTotalPrice(String productName1, int quantity1, String productName2, int quantity2, int total) {
+    void testTotalPrice(String productName1, int quantity1, String productName2, int quantity2, int total)
+            throws NoSuchObjectException {
         settingOrders(productName1, quantity1, productName2, quantity2);
         assertSoftly(softly -> {
             softly.assertThat(this.orders.getTotalPrice()).isEqualTo(total);
@@ -77,7 +81,8 @@ class OrdersTest {
                     "컵라면,1,에너지바,3,0"
             }
     )
-    void testPromotionDiscount(String productName1, int quantity1, String productName2, int quantity2, int discount) {
+    void testPromotionDiscount(String productName1, int quantity1, String productName2, int quantity2, int discount)
+            throws NoSuchObjectException {
         settingOrders(productName1, quantity1, productName2, quantity2);
         assertSoftly(softly -> {
             softly.assertThat(this.orders.getPromotionDiscount()).isEqualTo(discount);
@@ -93,7 +98,8 @@ class OrdersTest {
                     "컵라면,1,에너지바,3,2310"
             }
     )
-    void testMembershipDiscount(String productName1, int quantity1, String productName2, int quantity2, int discount) {
+    void testMembershipDiscount(String productName1, int quantity1, String productName2, int quantity2, int discount)
+            throws NoSuchObjectException {
         settingOrders(productName1, quantity1, productName2, quantity2);
         assertSoftly(softly -> {
             softly.assertThat(this.orders.getMembershipDiscount(true)).isEqualTo(discount);
@@ -104,7 +110,7 @@ class OrdersTest {
     @DisplayName("구매된 수량만큼 재고를 차감")
     @ParameterizedTest(name = "구매 수량({0}), 재고 수량(10)")
     @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-    void testDecrementStock(int quantity) {
+    void testDecrementStock(int quantity) throws NoSuchObjectException {
         Product product = this.productRepository.getProductWithName("감자칩");
         this.orders.addOrder(product, this.promotionRepository.getPromotionWithName(product.getPromotion()),
                 quantity);
@@ -123,7 +129,8 @@ class OrdersTest {
                     "1,5,4", "2,5,3", "3,5,2", "4,5,1", "5,5,0", "6,4,0", "7,3,0", "8,2,0", "9,1,0", "10,0,0"
             }
     )
-    void testDecrementPromotionStock(int quantity, int productStock, int promotionProductStock) {
+    void testDecrementPromotionStock(int quantity, int productStock, int promotionProductStock)
+            throws NoSuchObjectException {
         Product product = this.productRepository.getProductWithName("감자칩");
         this.orders.addOrder(product, this.promotionRepository.getPromotionWithName(product.getPromotion()),
                 quantity);
