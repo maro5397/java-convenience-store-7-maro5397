@@ -50,15 +50,32 @@ public class PurchaseServiceImpl implements PurchaseService {
         private final Pattern pattern = Pattern.compile(regex);
 
         public void getOrders(Orders orders, String order) {
+            Matcher matcher = validateOrderFormat(order);
+            String productName = matcher.group("product");
+            Product product = getProduct(productName);
+            Promotion promotion = getPromotion(product);
+            int quantity = parseQuantity(matcher.group("quantity"));
+            orders.addOrder(product, promotion, quantity);
+        }
+
+        private Matcher validateOrderFormat(String order) {
             Matcher matcher = pattern.matcher(order);
             if (!matcher.find()) {
                 throw new IllegalArgumentException("[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.");
             }
-            String productName = matcher.group("product");
-            Product product = productRepository.getProductWithName(productName);
-            Promotion promotion = promotionRepository.getPromotionWithName(product.getPromotion());
-            int quantity = Integer.parseInt(matcher.group("quantity"));
-            orders.addOrder(product, promotion, quantity);
+            return matcher;
+        }
+
+        private Product getProduct(String productName) {
+            return productRepository.getProductWithName(productName);
+        }
+
+        private Promotion getPromotion(Product product) {
+            return promotionRepository.getPromotionWithName(product.getPromotion());
+        }
+
+        private int parseQuantity(String quantityStr) {
+            return Integer.parseInt(quantityStr);
         }
     }
 }

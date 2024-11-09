@@ -24,16 +24,32 @@ public class PromotionRepository {
 
     private void loadPromotions() {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                setPromotions(line);
-            }
+            skipHeader(br);
+            processLines(br);
         } catch (IOException e) {
-            System.err.println("[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty("user.dir") + e.getMessage());
+            handleIOException(e);
         } catch (NumberFormatException e) {
-            System.err.println("[ERROR] 숫자 형식이 올바르지 않습니다: " + e.getMessage());
+            handleNumberFormatException(e);
         }
+    }
+
+    private void skipHeader(BufferedReader br) throws IOException {
+        br.readLine();
+    }
+
+    private void processLines(BufferedReader br) throws IOException {
+        String line;
+        while ((line = br.readLine()) != null) {
+            setPromotions(line);
+        }
+    }
+
+    private void handleIOException(IOException e) {
+        System.err.println("[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty("user.dir") + e.getMessage());
+    }
+
+    private void handleNumberFormatException(NumberFormatException e) {
+        System.err.println("[ERROR] 숫자 형식이 올바르지 않습니다: " + e.getMessage());
     }
 
     private void setPromotions(String line) {

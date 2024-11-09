@@ -34,42 +34,79 @@ public class ConsoleOutputViewImpl implements OutputView {
     @Override
     public void displayStockStatus(List<Product> products) {
         for (Product product : products) {
-            if (!product.getPromotion().isEmpty()) {
-                if (product.getPromotionStock() != 0) {
-                    System.out.printf(STOCK_STATUS_MESSAGE, product.getName(), product.getPrice(), product.getPromotionStock(),
-                            product.getPromotion());
-                }
-                if (product.getPromotionStock() == 0) {
-                    System.out.printf(NONE_STOCK_STATUS_MESSAGE, product.getName(), product.getPrice(),
-                            product.getPromotion());
-                }
-            }
-            if (product.getStock() != 0) {
-                System.out.printf(STOCK_STATUS_MESSAGE, product.getName(), product.getPrice(), product.getStock(), "");
-            }
-            if (product.getStock() == 0) {
-                System.out.printf(NONE_STOCK_STATUS_MESSAGE, product.getName(), product.getPrice(), "");
-            }
+            displayPromotionStockStatus(product);
+            displayStockStatus(product);
         }
     }
 
     @Override
     public void displayReceipt(Orders orders, boolean isMembership) {
-        System.out.println(RECEIPT_ORDERS_HEADER_MESSAGE);
-        for (Order order : orders.getOrders()) {
-            System.out.printf(RECEIPT_ORDERS_MESSAGE, order.getProduct().getName(), order.getQuantity(),
-                    order.getProduct().getPrice() * order.getQuantity());
-        }
-        System.out.println(RECEIPT_PROMOTION_HEADER_MESSAGE);
-        for (Order order : orders.getOrders()) {
-            if (order.getOrderResult().getPromotionApplyfreeItemCount() != 0) {
-                System.out.printf(RECEIPT_PROMOTION_MESSAGE, order.getProduct().getName(),
-                        order.getOrderResult().getPromotionApplyfreeItemCount());
+        printReceiptHeader();
+        printOrderDetails(orders);
+        printPromotionDetails(orders);
+        printReceiptFooter(orders, isMembership);
+    }
+
+    private void displayPromotionStockStatus(Product product) {
+        if (!product.getPromotion().isEmpty()) {
+            if (product.getPromotionStock() != 0) {
+                displayStockMessage(product, product.getPromotionStock(), product.getPromotion());
+            } else {
+                displayNoneStockMessage(product, product.getPromotion());
             }
         }
+    }
+
+    private void displayStockStatus(Product product) {
+        if (product.getStock() != 0) {
+            displayStockMessage(product, product.getStock(), "");
+        } else {
+            displayNoneStockMessage(product, "");
+        }
+    }
+
+    private void displayStockMessage(Product product, int stock, String promotion) {
+        System.out.printf(STOCK_STATUS_MESSAGE, product.getName(), product.getPrice(), stock, promotion);
+    }
+
+    private void displayNoneStockMessage(Product product, String promotion) {
+        System.out.printf(NONE_STOCK_STATUS_MESSAGE, product.getName(), product.getPrice(), promotion);
+    }
+
+    private void printReceiptHeader() {
+        System.out.println(RECEIPT_ORDERS_HEADER_MESSAGE);
+    }
+
+    private void printOrderDetails(Orders orders) {
+        for (Order order : orders.getOrders()) {
+            printOrderDetail(order);
+        }
+    }
+
+    private void printOrderDetail(Order order) {
+        int totalPrice = order.getProduct().getPrice() * order.getQuantity();
+        System.out.printf(RECEIPT_ORDERS_MESSAGE, order.getProduct().getName(), order.getQuantity(), totalPrice);
+    }
+
+    private void printPromotionDetails(Orders orders) {
+        System.out.println(RECEIPT_PROMOTION_HEADER_MESSAGE);
+        for (Order order : orders.getOrders()) {
+            printPromotionDetail(order);
+        }
+    }
+
+    private void printPromotionDetail(Order order) {
+        if (order.getOrderResult().getPromotionApplyfreeItemCount() != 0) {
+            System.out.printf(RECEIPT_PROMOTION_MESSAGE, order.getProduct().getName(),
+                    order.getOrderResult().getPromotionApplyfreeItemCount());
+        }
+    }
+
+    private void printReceiptFooter(Orders orders, boolean isMembership) {
+        int totalDiscount = orders.getPromotionDiscount() * -1;
+        int membershipDiscount = orders.getMembershipDiscount(isMembership) * -1;
+        int finalPrice = orders.getTotalPrice() - orders.getPromotionDiscount() - membershipDiscount;
         System.out.printf(RECEIPT_FOOTER_MESSAGE, orders.getTotalQuantity(), orders.getTotalPrice(),
-                orders.getPromotionDiscount() * -1,
-                orders.getMembershipDiscount(isMembership) * -1,
-                orders.getTotalPrice() - orders.getPromotionDiscount() - orders.getMembershipDiscount(isMembership));
+                totalDiscount, membershipDiscount, finalPrice);
     }
 }

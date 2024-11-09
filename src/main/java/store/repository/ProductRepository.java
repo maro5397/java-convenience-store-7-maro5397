@@ -32,16 +32,32 @@ public class ProductRepository {
 
     private void loadProducts() {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                setProducts(line);
-            }
+            skipHeader(br);
+            processLines(br);
         } catch (IOException e) {
-            System.err.println("[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty("user.dir") + e.getMessage());
+            handleIOException(e);
         } catch (NumberFormatException e) {
-            System.err.println("[ERROR] 숫자 형식이 올바르지 않습니다: " + e.getMessage());
+            handleNumberFormatException(e);
         }
+    }
+
+    private void skipHeader(BufferedReader br) throws IOException {
+        br.readLine();
+    }
+
+    private void processLines(BufferedReader br) throws IOException {
+        String line;
+        while ((line = br.readLine()) != null) {
+            setProducts(line);
+        }
+    }
+
+    private void handleIOException(IOException e) {
+        System.err.println("[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty("user.dir") + e.getMessage());
+    }
+
+    private void handleNumberFormatException(NumberFormatException e) {
+        System.err.println("[ERROR] 숫자 형식이 올바르지 않습니다: " + e.getMessage());
     }
 
     private void setProducts(String line) {
@@ -51,21 +67,30 @@ public class ProductRepository {
         int quantity = Integer.parseInt(values[2]);
         String promotion = values[3];
         Product product = products.get(name);
-        if (!promotion.equals("null")) {
-            if(product != null) {
-                products.put(name, new Product(name, price, product.getStock(), quantity, promotion));
-            }
-            if(product == null) {
-                products.put(name, new Product(name, price, 0, quantity, promotion));
-            }
-        }
+        addProduct(name, price, quantity, promotion, product);
+    }
+
+    private void addProduct(String name, int price, int quantity, String promotion, Product product) {
         if (promotion.equals("null")) {
-            if(product != null) {
-                products.put(name, new Product(name, price, quantity, product.getPromotionStock(), product.getPromotion()));
-            }
-            if(product == null) {
-                products.put(name, new Product(name, price, quantity, 0, promotion));
-            }
+            addProductWithoutPromotion(name, price, quantity, product);
+        } else {
+            addProductWithPromotion(name, price, quantity, promotion, product);
+        }
+    }
+
+    private void addProductWithPromotion(String name, int price, int quantity, String promotion, Product product) {
+        if (product != null) {
+            products.put(name, new Product(name, price, product.getStock(), quantity, promotion));
+        } else {
+            products.put(name, new Product(name, price, 0, quantity, promotion));
+        }
+    }
+
+    private void addProductWithoutPromotion(String name, int price, int quantity, Product product) {
+        if (product != null) {
+            products.put(name, new Product(name, price, quantity, product.getPromotionStock(), product.getPromotion()));
+        } else {
+            products.put(name, new Product(name, price, quantity, 0, "null"));
         }
     }
 }

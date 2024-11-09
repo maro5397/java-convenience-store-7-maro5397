@@ -49,14 +49,37 @@ public class Orders {
         if (!isMembership) {
             return 0;
         }
+        int discountPrice = calculateDiscountPrice();
+        return applyDiscountLimit(discountPrice);
+    }
+
+    private int calculateDiscountPrice() {
         int discountPrice = 0;
         for (Order order : orders) {
-            if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
-                int noneDiscountPromotionStockCount = order.getOrderResult().getNoneDiscountPromotionStockCount();
-                discountPrice += noneDiscountPromotionStockCount * order.getProduct().getPrice();
-            }
-            discountPrice += order.getOrderResult().getProductConsumeCount() * order.getProduct().getPrice();
+            discountPrice += calculateOrderDiscount(order);
         }
+        return discountPrice;
+    }
+
+    private int calculateOrderDiscount(Order order) {
+        int orderDiscount = 0;
+        if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
+            orderDiscount += calculateNonDiscountPromotionPrice(order);
+        }
+        orderDiscount += calculateProductPrice(order);
+        return orderDiscount;
+    }
+
+    private int calculateNonDiscountPromotionPrice(Order order) {
+        int noneDiscountPromotionStockCount = order.getOrderResult().getNoneDiscountPromotionStockCount();
+        return noneDiscountPromotionStockCount * order.getProduct().getPrice();
+    }
+
+    private int calculateProductPrice(Order order) {
+        return order.getOrderResult().getProductConsumeCount() * order.getProduct().getPrice();
+    }
+
+    private int applyDiscountLimit(int discountPrice) {
         return Math.min((int) (discountPrice * 0.3), 8000);
     }
 
