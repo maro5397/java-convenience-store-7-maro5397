@@ -14,7 +14,7 @@ class OrderResultTest {
     )
     void testProductFieldManage(int freeItemCount, int paidItemCount, int quantity) {
         OrderResult orderResult = new OrderResult(freeItemCount, paidItemCount,
-                freeItemCount + paidItemCount, quantity - (freeItemCount + paidItemCount));
+                freeItemCount + paidItemCount, quantity - (freeItemCount + paidItemCount), true);
         assertSoftly(softly -> {
             softly.assertThat(orderResult.getPromotionApplyfreeItemCount())
                     .isEqualTo(freeItemCount);
@@ -24,6 +24,8 @@ class OrderResultTest {
                     .isEqualTo(freeItemCount + paidItemCount);
             softly.assertThat(orderResult.getProductConsumeCount())
                     .isEqualTo(quantity - (freeItemCount + paidItemCount));
+            softly.assertThat(orderResult.isPromotionApply())
+                    .isEqualTo(true);
         });
     }
 }
