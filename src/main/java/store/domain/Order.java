@@ -64,7 +64,7 @@ public class Order {
 
     private void consumePromotionProduct() {
         if (this.product.getPromotion().isEmpty()) {
-            this.orderResult = new OrderResult(0, 0, 0, quantity);
+            this.orderResult = new OrderResult(0, 0, 0, quantity, false);
             return;
         }
         OrderResult orderResult = this.promotion.calculatePromotionDiscount(this.product.getPromotionStock(),
@@ -80,7 +80,7 @@ public class Order {
         }
         this.orderResult = new OrderResult(orderResult.getPromotionApplyfreeItemCount(),
                 orderResult.getPromotionApplypaidItemCount(),
-                promotionProductConsumeCount, productConsumeCount);
+                promotionProductConsumeCount, productConsumeCount, true);
         canGetAdditionalProductByPromotion();
     }
 

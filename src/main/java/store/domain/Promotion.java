@@ -28,7 +28,7 @@ public class Promotion {
         int freeItemCount = 0;
         int paidItemCount = 0;
         if (!isWithinPromotionPeriod()) {
-            return new OrderResult(0, 0, 0, quantity);
+            return new OrderResult(0, 0, 0, quantity, false);
         }
         while (promotionStock - freeItemCount - paidItemCount >= get + buy
                 && quantity - freeItemCount - paidItemCount >= get + buy) {
@@ -36,11 +36,11 @@ public class Promotion {
             paidItemCount += buy;
         }
         return new OrderResult(freeItemCount, paidItemCount,
-                freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount);
+                freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount, true);
     }
 
     public boolean canApplyPromotion(int quantity, int remainingPromotionStock) {
-        return quantity % (get + buy) - buy == 0 && remainingPromotionStock >= get;
+        return quantity % (get + buy) - buy == 0 && remainingPromotionStock >= get && isWithinPromotionPeriod();
     }
 
     private boolean isWithinPromotionPeriod() {
