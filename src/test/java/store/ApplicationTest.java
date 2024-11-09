@@ -121,6 +121,24 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @Test
+    @DisplayName("프로모션 기간 시작 당일 테스트")
+    void testPromotionApplyStartDate() {
+        assertNowTest(() -> {
+            run("[초코바-2]", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("초코바22,400","초코바1");
+        }, LocalDate.of(2024, 1, 1).atStartOfDay());
+    }
+
+    @Test
+    @DisplayName("프로모션 기간 끝 당일 테스트")
+    void testPromotionApplyEndDate() {
+        assertNowTest(() -> {
+            run("[초코바-2]", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("초코바22,400","초코바1");
+        }, LocalDate.of(2024, 12, 31).atStartOfDay());
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});
