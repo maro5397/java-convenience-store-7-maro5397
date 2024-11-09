@@ -1,13 +1,12 @@
 package store.domain;
 
-import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Orders {
     private final List<Order> orders = new ArrayList<>();
 
-    public void addOrder(Product product, Promotion promotion, int quantity) throws NoSuchObjectException {
+    public void addOrder(Product product, Promotion promotion, int quantity) {
         Order order = new Order(product, promotion, quantity);
         orders.add(order);
     }

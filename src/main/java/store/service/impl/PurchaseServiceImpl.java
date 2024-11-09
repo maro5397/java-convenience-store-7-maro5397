@@ -1,6 +1,5 @@
 package store.service.impl;
 
-import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +26,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public Orders makeOrders(String orderInput) throws NoSuchObjectException {
+    public Orders makeOrders(String orderInput) {
         OrderInputToOrdersUtil ordersUtil = new OrderInputToOrdersUtil();
         Orders orders = new Orders();
         for (String order : orderInput.split(",")) {
@@ -50,7 +49,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         private final String regex = "\\[(?<product>[가-힣a-zA-Z0-9]+)-(?<quantity>\\d+)\\]";
         private final Pattern pattern = Pattern.compile(regex);
 
-        public void getOrders(Orders orders, String order) throws NoSuchObjectException {
+        public void getOrders(Orders orders, String order) {
             Matcher matcher = pattern.matcher(order);
             if (!matcher.find()) {
                 throw new IllegalArgumentException("[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.");
