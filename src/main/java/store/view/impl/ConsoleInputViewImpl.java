@@ -16,36 +16,38 @@ public class ConsoleInputViewImpl implements InputView {
     @Override
     public String getPurchaseInput() {
         System.out.println(PURCHASE_INPUT_MESSAGE);
-        String orderInput = Console.readLine();
-        return orderInput;
+        return Console.readLine();
     }
 
     @Override
     public boolean getConfirmationMembershipDiscountInput() {
         System.out.println(MEMBERSHIP_DISCOUNT_MESSAGE);
-        String answer = Console.readLine();
-        return answer.equals(YES);
+        return checkAnswer(Console.readLine());
     }
 
     @Override
     public boolean getConfirmationNonePromotionInput(Order order) {
         System.out.printf(PROMOTION_CONFIRMATION_MESSAGE, order.getProduct().getName(),
                 order.getOrderResult().getNoneDiscountPromotionStockCount());
-        String answer = Console.readLine();
-        return answer.equals(YES);
+        return checkAnswer(Console.readLine());
     }
 
     @Override
     public boolean getConfirmationFreeAdditionInput(Order order) {
         System.out.printf(CONFIRM_FREE_ADDITION_MESSAGE, order.getProduct().getName(), order.getPromotion().getGet());
-        String answer = Console.readLine();
-        return answer.equals(YES);
+        return checkAnswer(Console.readLine());
     }
 
     @Override
     public boolean getAdditionalPurchaseInput() {
         System.out.println(ADDITIONAL_PURCHASE_MESSAGE);
-        String answer = Console.readLine();
-        return answer.equals(YES);
+        return checkAnswer(Console.readLine());
+    }
+
+    private boolean checkAnswer(String answer) {
+        if(answer.equals(YES) || answer.equals(NO)) {
+            return answer.equals(YES);
+        }
+        throw new IllegalArgumentException("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
     }
 }
