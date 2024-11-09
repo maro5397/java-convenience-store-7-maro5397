@@ -2,21 +2,12 @@ package store.domain;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import store.repository.PromotionRepository;
 
 class ProductTest {
-    private PromotionRepository promotionRepository;
-
-    @BeforeEach
-    void setUp() {
-        promotionRepository = new PromotionRepository("src/main/resources/promotions.md");
-    }
-
     @DisplayName("상품의 기본 정보 관리")
     @ParameterizedTest(name = "상품이름: {0}, 상품가격: {1}, 상품재고: {2}, 프로모션상품재고: {3}, 프로모션이름: {4}")
     @CsvSource(
