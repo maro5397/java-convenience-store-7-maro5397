@@ -3,18 +3,11 @@ package store.domain;
 import store.domain.strategy.PromotionStrategy;
 
 public class Promotion {
-    private final String name;
     private final int buy;
     private final int get;
     private final PromotionStrategy promotionStrategy;
 
-    public Promotion(
-            String name,
-            int buy,
-            int get,
-            PromotionStrategy promotionStrategy
-    ) {
-        this.name = name;
+    public Promotion(int buy, int get, PromotionStrategy promotionStrategy) {
         this.buy = buy;
         this.get = get;
         this.promotionStrategy = promotionStrategy;

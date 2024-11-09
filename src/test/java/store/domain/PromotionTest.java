@@ -21,7 +21,6 @@ class PromotionTest {
                 LocalDateTime.parse(dateTime, formatter)
         );
         softDrinkPromotion = new Promotion(
-                "탄산2+1",
                 2,
                 2,
                 promotionStrategy

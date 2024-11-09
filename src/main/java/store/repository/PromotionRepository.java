@@ -44,7 +44,7 @@ public class PromotionRepository {
         String startDate = values[3];
         String endDate = values[4];
         PromotionStrategy promotionStrategy = new LocalDateTimePromotionStrategy(startDate, endDate);
-        Promotion promotion = new Promotion(name, buy, get, promotionStrategy);
+        Promotion promotion = new Promotion(buy, get, promotionStrategy);
         promotions.put(name, promotion);
     }
 }
