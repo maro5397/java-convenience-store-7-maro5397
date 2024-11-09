@@ -35,9 +35,7 @@ public class ProductRepository {
             skipHeader(br);
             processLines(br);
         } catch (IOException e) {
-            handleIOException(e);
-        } catch (NumberFormatException e) {
-            handleNumberFormatException(e);
+            System.err.println("[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty("user.dir") + e.getMessage());
         }
     }
 
@@ -50,14 +48,6 @@ public class ProductRepository {
         while ((line = br.readLine()) != null) {
             setProducts(line);
         }
-    }
-
-    private void handleIOException(IOException e) {
-        System.err.println("[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty("user.dir") + e.getMessage());
-    }
-
-    private void handleNumberFormatException(NumberFormatException e) {
-        System.err.println("[ERROR] 숫자 형식이 올바르지 않습니다: " + e.getMessage());
     }
 
     private void setProducts(String line) {
