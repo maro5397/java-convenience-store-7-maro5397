@@ -46,7 +46,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     private class OrderInputToOrdersUtil {
-        private final String regex = "\\[(?<product>[가-힣a-zA-Z0-9]+)-(?<quantity>\\d+)\\]";
+        private final String regex = "(?<![\\[\\{\\(\\w])\\[(?<product>[가-힣a-zA-Z0-9]+)-(?<quantity>\\d+)\\](?![\\]\\}\\)\\w])";
         private final Pattern pattern = Pattern.compile(regex);
 
         public void getOrders(Orders orders, String order) {
