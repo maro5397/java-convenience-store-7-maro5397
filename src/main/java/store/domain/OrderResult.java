@@ -5,15 +5,13 @@ public class OrderResult {
     private final int promotionApplypaidItemCount;
     private final int promotionProductConsumeCount;
     private final int productConsumeCount;
-    private final boolean isPromotionApply;
 
     public OrderResult(int freeItemCount, int paidItemCount,
-                       int promotionProductConsumeCount, int productConsumeCount, boolean isPromotionApply) {
+                       int promotionProductConsumeCount, int productConsumeCount) {
         this.promotionApplyfreeItemCount = freeItemCount;
         this.promotionApplypaidItemCount = paidItemCount;
         this.promotionProductConsumeCount = promotionProductConsumeCount;
         this.productConsumeCount = productConsumeCount;
-        this.isPromotionApply = isPromotionApply;
     }
 
     public int getPromotionApplyfreeItemCount() {
@@ -30,10 +28,6 @@ public class OrderResult {
 
     public int getProductConsumeCount() {
         return productConsumeCount;
-    }
-
-    public boolean isPromotionApply() {
-        return isPromotionApply;
     }
 
     public int getNoneDiscountPromotionStockCount() {

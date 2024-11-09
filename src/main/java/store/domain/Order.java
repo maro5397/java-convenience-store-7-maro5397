@@ -65,7 +65,7 @@ public class Order {
 
     private void createOrderResult() {
         if (this.product.getPromotion().isEmpty()) {
-            this.orderResult = new OrderResult(0, 0, 0, quantity, false);
+            this.orderResult = new OrderResult(0, 0, 0, quantity);
             return;
         }
         OrderResult orderResult = this.promotion.calculatePromotionDiscount(this.product.getPromotionStock(),
@@ -96,7 +96,7 @@ public class Order {
                                                  int productConsumeCount) {
         return new OrderResult(orderResult.getPromotionApplyfreeItemCount(),
                 orderResult.getPromotionApplypaidItemCount(),
-                promotionProductConsumeCount, productConsumeCount, true);
+                promotionProductConsumeCount, productConsumeCount);
     }
 
     private void validate() {

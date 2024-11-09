@@ -19,7 +19,7 @@ public class Promotion {
 
     public OrderResult calculatePromotionDiscount(int promotionStock, int quantity) {
         if (!isWithinPromotionPeriod()) {
-            return new OrderResult(0, 0, 0, quantity, false);
+            return new OrderResult(0, 0, 0, quantity);
         }
         return getWithinPromotionDiscount(promotionStock, quantity);
     }
@@ -41,6 +41,6 @@ public class Promotion {
             paidItemCount += buy;
         }
         return new OrderResult(freeItemCount, paidItemCount,
-                freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount, true);
+                freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount);
     }
 }
