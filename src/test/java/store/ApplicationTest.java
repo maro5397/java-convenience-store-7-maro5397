@@ -93,7 +93,7 @@ class ApplicationTest extends NsTest {
     @DisplayName("추가 프로모션 상품 구매 거절 테스트")
     void testRefuseConfirmationFreeAdditionInput() {
         assertSimpleTest(() -> {
-            run("[오렌지주스-1]", "Y", "N", "N");
+            run("[오렌지주스-1]", "N", "N", "N", "N");
             assertThat(output()).contains(
                     "멤버십 할인을 받으시겠습니까? (Y/N)",
                     "현재 오렌지주스은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)"
