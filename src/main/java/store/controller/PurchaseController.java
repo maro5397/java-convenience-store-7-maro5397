@@ -64,8 +64,7 @@ public class PurchaseController {
 
     private void findNonePromotionDiscount(Orders orders) {
         for (Order order : orders.getOrders()) {
-            if (order.getPromotion() != null && order.getOrderResult().getNoneDiscountPromotionStockCount() != 0
-                    && !order.getOrderResult().isPromotionApply()) {
+            if (order.getPromotion() != null && order.getOrderResult().getNoneDiscountPromotionStockCount() != 0) {
                 suggestNonePromotionDiscount(order);
             }
         }

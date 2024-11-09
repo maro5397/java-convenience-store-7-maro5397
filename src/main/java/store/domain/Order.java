@@ -20,6 +20,9 @@ public class Order {
     }
 
     public Promotion getPromotion() {
+        if (promotion == null || !promotion.isWithinPromotionPeriod()) {
+            return null;
+        }
         return promotion;
     }
 
