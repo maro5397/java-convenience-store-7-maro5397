@@ -1,7 +1,5 @@
 package store.domain;
 
-import java.rmi.NoSuchObjectException;
-
 public class Order {
     private final Product product;
     private final Promotion promotion;
@@ -9,7 +7,7 @@ public class Order {
     private OrderResult orderResult;
     private int quantity;
 
-    public Order(Product product, Promotion promotion, int quantity) throws NoSuchObjectException {
+    public Order(Product product, Promotion promotion, int quantity) {
         this.product = product;
         this.promotion = promotion;
         this.quantity = quantity;
@@ -84,20 +82,13 @@ public class Order {
         canGetAdditionalProductByPromotion();
     }
 
-    private void validate() throws NoSuchObjectException {
-        validateProduct();
+    private void validate() {
         validateQuantity();
     }
 
     private void validateQuantity() {
         if (this.quantity > product.getPromotionStock() + product.getStock()) {
             throw new IllegalArgumentException("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
-        }
-    }
-
-    private void validateProduct() throws NoSuchObjectException {
-        if (this.product == null) {
-            throw new NoSuchObjectException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
         }
     }
 }
