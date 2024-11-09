@@ -23,6 +23,10 @@ public class ProductRepository {
     }
 
     public Product getProductWithName(String productName) {
+        Product product = products.get(productName);
+        if (product == null) {
+            throw new IllegalStateException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
+        }
         return products.get(productName);
     }
 
