@@ -77,6 +77,30 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @Test
+    @DisplayName("프로모션 할인 거절 테스트")
+    void testRefuseNonePromotionDiscount() {
+        assertSimpleTest(() -> {
+            run("[콜라-4]", "N", "N", "N");
+            assertThat(output()).contains(
+                    "멤버십 할인을 받으시겠습니까? (Y/N)",
+                    "현재 콜라 1개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)"
+            );
+        });
+    }
+
+    @Test
+    @DisplayName("추가 프로모션 상품 구매 거절 테스트")
+    void testRefuseConfirmationFreeAdditionInput() {
+        assertSimpleTest(() -> {
+            run("[오렌지주스-1]", "Y", "N", "N");
+            assertThat(output()).contains(
+                    "멤버십 할인을 받으시겠습니까? (Y/N)",
+                    "현재 오렌지주스은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)"
+            );
+        });
+    }
+
     @ParameterizedTest(name = "입력 주문: {0}")
     @ValueSource(strings = {"[abc-12]", "[테스트-7]", "[솜사탕-5]"})
     @DisplayName("존재하지 않는 상품 입력")
