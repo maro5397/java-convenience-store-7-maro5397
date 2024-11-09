@@ -63,24 +63,24 @@ public class ProductRepository {
     private void addProduct(String name, int price, int quantity, String promotion, Product product) {
         if (promotion.equals("null")) {
             addProductWithoutPromotion(name, price, quantity, product);
-        } else {
-            addProductWithPromotion(name, price, quantity, promotion, product);
+            return;
         }
+        addProductWithPromotion(name, price, quantity, promotion, product);
     }
 
     private void addProductWithPromotion(String name, int price, int quantity, String promotion, Product product) {
         if (product != null) {
             products.put(name, new Product(name, price, product.getStock(), quantity, promotion));
-        } else {
-            products.put(name, new Product(name, price, 0, quantity, promotion));
+            return;
         }
+        products.put(name, new Product(name, price, 0, quantity, promotion));
     }
 
     private void addProductWithoutPromotion(String name, int price, int quantity, Product product) {
         if (product != null) {
             products.put(name, new Product(name, price, quantity, product.getPromotionStock(), product.getPromotion()));
-        } else {
-            products.put(name, new Product(name, price, quantity, 0, "null"));
+            return;
         }
+        products.put(name, new Product(name, price, quantity, 0, "null"));
     }
 }

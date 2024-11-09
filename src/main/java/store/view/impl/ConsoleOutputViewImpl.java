@@ -51,18 +51,18 @@ public class ConsoleOutputViewImpl implements OutputView {
         if (!product.getPromotion().isEmpty()) {
             if (product.getPromotionStock() != 0) {
                 displayStockMessage(product, product.getPromotionStock(), product.getPromotion());
-            } else {
-                displayNoneStockMessage(product, product.getPromotion());
+                return;
             }
+            displayNoneStockMessage(product, product.getPromotion());
         }
     }
 
     private void displayStockStatus(Product product) {
         if (product.getStock() != 0) {
             displayStockMessage(product, product.getStock(), "");
-        } else {
-            displayNoneStockMessage(product, "");
+            return;
         }
+        displayNoneStockMessage(product, "");
     }
 
     private void displayStockMessage(Product product, int stock, String promotion) {
