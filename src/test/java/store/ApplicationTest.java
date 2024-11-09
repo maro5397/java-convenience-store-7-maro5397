@@ -139,6 +139,21 @@ class ApplicationTest extends NsTest {
         }, LocalDate.of(2024, 12, 31).atStartOfDay());
     }
 
+    @ParameterizedTest(name = "주문 입력: {0}")
+    @ValueSource(strings = {
+            "yes", "good-[test]",
+            "[abc]-1", "123-123", "wrong",
+            "[[초코바-2]]", "([초코바-2])", "{[초코바-2]}",
+            "a[초코바-2],[초코바-1]b"
+    })
+    @DisplayName("잘못된 포맷의 주문 입력")
+    void testWrongFormatOfOrderInput(String input) {
+        assertSimpleTest(() -> {
+            runException(input);
+            assertThat(output()).contains("[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.");
+        });
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});
