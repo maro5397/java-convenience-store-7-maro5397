@@ -89,11 +89,13 @@
 ### Order
 - **주문 관리**
     - `product`: 고객이 구매할 상품
+      - 없는 상품을 등록할 수 없다.
     - `promotion`: 주문에 적용된 프로모션
     - `canApplyAdditionalPromotion`: 프로모션 해택 적용 결과
     - `orderResult`: 각 주문 요구사항 적용결과
     - `quantity`: 고객이 구매할 상품개수
       - 상품 개수는 0이 될 수 없음
+      - `product`의 `stock`과`promotionStock`의 합을 넘을 수 없다.
 - **프로모션 적용**
     - `canGetAdditionalProductByPromotion()`: 추가로 프로모션 상품을 받을 수 있는지 기록
     - `applyAdditionalPromotion()`: 추가로 프로모션 상품 받기 적용
