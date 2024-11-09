@@ -28,6 +28,10 @@ public class Promotion {
         return quantity % (get + buy) - buy == 0 && remainingPromotionStock >= get && isWithinPromotionPeriod();
     }
 
+    public boolean isWithinPromotionPeriod() {
+        return this.promotionStrategy.getPromotionConditionChecker();
+    }
+
     private OrderResult getWithinPromotionDiscount(int promotionStock, int quantity) {
         int freeItemCount = 0;
         int paidItemCount = 0;
@@ -38,9 +42,5 @@ public class Promotion {
         }
         return new OrderResult(freeItemCount, paidItemCount,
                 freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount, true);
-    }
-
-    private boolean isWithinPromotionPeriod() {
-        return this.promotionStrategy.getPromotionConditionChecker();
     }
 }
