@@ -36,7 +36,9 @@ public class PurchaseController {
     }
 
     private Orders getOrderFromCustomer() {
-        return this.purchaseService.makeOrders(this.inputView.getPurchaseInput());
+        return executeWithRetry(() -> {
+            return this.purchaseService.makeOrders(this.inputView.getPurchaseInput());
+        });
     }
 
     private void findAdditionalPromotionDiscount(Orders orders) {
@@ -48,10 +50,16 @@ public class PurchaseController {
     }
 
     private void suggestAdditionalPromotionDiscount(Order order) {
-        boolean confirmationFreeAdditionInput = this.inputView.getConfirmationFreeAdditionInput(order);
+        boolean confirmationFreeAdditionInput = getConfirmationFreeAdditionInput(order);
         if (confirmationFreeAdditionInput) {
             this.purchaseService.applyAdditionalPromotionProduct(order);
         }
+    }
+
+    private boolean getConfirmationFreeAdditionInput(Order order) {
+        return executeWithRetry(() -> {
+            return this.inputView.getConfirmationFreeAdditionInput(order);
+        });
     }
 
     private void findNonePromotionDiscount(Orders orders) {
@@ -63,14 +71,22 @@ public class PurchaseController {
     }
 
     private void suggestNonePromotionDiscount(Order order) {
-        boolean confirmationNonePromotionInput = this.inputView.getConfirmationNonePromotionInput(order);
+        boolean confirmationNonePromotionInput = getConfirmationNonePromotionInput(order);
         if (!confirmationNonePromotionInput) {
             this.purchaseService.deleteNonePromotionProduct(order);
         }
     }
 
+    private boolean getConfirmationNonePromotionInput(Order order) {
+        return executeWithRetry(() -> {
+            return this.inputView.getConfirmationNonePromotionInput(order);
+        });
+    }
+
     private boolean askMembershipDiscount() {
-        return this.inputView.getConfirmationMembershipDiscountInput();
+        return executeWithRetry(() -> {
+            return this.inputView.getConfirmationMembershipDiscountInput();
+        });
     }
 
     private void displayReceipt(Orders orders) {
@@ -78,7 +94,9 @@ public class PurchaseController {
     }
 
     private boolean askAdditionalPurchase() {
-        return this.inputView.getAdditionalPurchaseInput();
+        return executeWithRetry(() -> {
+            return this.inputView.getAdditionalPurchaseInput();
+        });
     }
 
     private void applyConsumeStock(Orders orders) {
@@ -89,10 +107,10 @@ public class PurchaseController {
         while (true) {
             try {
                 return callable.call();
-            } catch (NoSuchElementException error) {
-                throw error;
-            } catch (Exception error) {
-                System.out.println(error.getMessage());
+            } catch (NoSuchElementException exception) {
+                throw exception;
+            } catch (Exception exception) {
+                System.out.println(exception.getMessage());
             }
         }
     }
