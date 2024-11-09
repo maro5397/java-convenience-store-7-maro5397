@@ -111,6 +111,16 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @ParameterizedTest(name = "수락 입력(Y/N): {0}")
+    @ValueSource(strings = {"yes", "y", "no", "n", "test", "wrong-answer", "answer"})
+    @DisplayName("잘못된 수락 입력(Y/N)")
+    void testWrongAnswer(String input) {
+        assertSimpleTest(() -> {
+            runException("[오렌지주스-1]", input);
+            assertThat(output()).contains("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
+        });
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});
