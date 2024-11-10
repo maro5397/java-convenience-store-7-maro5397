@@ -2,7 +2,6 @@ package store.controller;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
-import store.domain.Order;
 import store.domain.Orders;
 import store.service.PurchaseService;
 import store.view.InputView;
@@ -41,46 +40,20 @@ public class PurchaseController {
         });
     }
 
-    private void findAdditionalPromotionDiscount(Orders orders) {
-        for (Order order : orders.getOrders()) {
-            if (order.getCanApplyAdditionalPromotion()) {
-                suggestAdditionalPromotionDiscount(order);
-            }
-        }
-    }
-
-    private void suggestAdditionalPromotionDiscount(Order order) {
-        boolean confirmationFreeAdditionInput = getConfirmationFreeAdditionInput(order);
-        if (confirmationFreeAdditionInput) {
-            this.purchaseService.applyAdditionalPromotionProduct(order);
-        }
-    }
-
-    private boolean getConfirmationFreeAdditionInput(Order order) {
+    private boolean findAdditionalPromotionDiscount(Orders orders) {
         return executeWithRetry(() -> {
-            return this.inputView.getConfirmationFreeAdditionInput(order);
+            return this.purchaseService.processAdditionalPromotionDiscount(orders, this.inputView);
         });
     }
 
-    private void findNonePromotionDiscount(Orders orders) {
-        for (Order order : orders.getOrders()) {
-            if (order.getPromotion() != null && order.getOrderResult().getNoneDiscountPromotionStockCount() != 0) {
-                suggestNonePromotionDiscount(order);
-            }
-        }
-    }
-
-    private void suggestNonePromotionDiscount(Order order) {
-        boolean confirmationNonePromotionInput = getConfirmationNonePromotionInput(order);
-        if (!confirmationNonePromotionInput) {
-            this.purchaseService.deleteNonePromotionProduct(order);
-        }
-    }
-
-    private boolean getConfirmationNonePromotionInput(Order order) {
+    private boolean findNonePromotionDiscount(Orders orders) {
         return executeWithRetry(() -> {
-            return this.inputView.getConfirmationNonePromotionInput(order);
+            return this.purchaseService.processNonePromotionProductDelete(orders, this.inputView);
         });
+    }
+
+    private void displayReceipt(Orders orders) {
+        this.outputView.displayReceipt(orders, askMembershipDiscount());
     }
 
     private boolean askMembershipDiscount() {
@@ -89,18 +62,14 @@ public class PurchaseController {
         });
     }
 
-    private void displayReceipt(Orders orders) {
-        this.outputView.displayReceipt(orders, askMembershipDiscount());
+    private void applyConsumeStock(Orders orders) {
+        orders.applyConsumeStock();
     }
 
     private boolean askAdditionalPurchase() {
         return executeWithRetry(() -> {
             return this.inputView.getAdditionalPurchaseInput();
         });
-    }
-
-    private void applyConsumeStock(Orders orders) {
-        orders.applyConsumeStock();
     }
 
     private <T> T executeWithRetry(Callable<T> callable) {

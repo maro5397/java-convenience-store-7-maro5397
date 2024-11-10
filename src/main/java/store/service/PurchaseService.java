@@ -1,16 +1,16 @@
 package store.service;
 
 import java.util.List;
-import store.domain.Order;
 import store.domain.Orders;
 import store.domain.Product;
+import store.view.InputView;
 
 public interface PurchaseService {
     List<Product> getStock();
 
     Orders makeOrders(String orderInput);
 
-    void applyAdditionalPromotionProduct(Order order);
+    boolean processAdditionalPromotionDiscount(Orders orders, InputView inputView);
 
-    void deleteNonePromotionProduct(Order order);
+    boolean processNonePromotionProductDelete(Orders orders, InputView inputView);
 }

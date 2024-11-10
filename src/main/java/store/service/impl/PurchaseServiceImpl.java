@@ -1,6 +1,9 @@
 package store.service.impl;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import store.common.constant.ErrorMessage;
@@ -11,6 +14,7 @@ import store.domain.Promotion;
 import store.repository.ProductRepository;
 import store.repository.PromotionRepository;
 import store.service.PurchaseService;
+import store.view.InputView;
 
 public class PurchaseServiceImpl implements PurchaseService {
     private static final String MATCHER_PRODUCT_KEYWORD = "product";
@@ -43,13 +47,50 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void applyAdditionalPromotionProduct(Order order) {
-        order.applyAdditionalPromotion();
+    public boolean processAdditionalPromotionDiscount(Orders orders, InputView inputView) {
+        return processDiscount(orders,
+                Order::getCanApplyAdditionalPromotion,
+                inputView::getConfirmationFreeAdditionInput,
+                Order::applyAdditionalPromotion
+        );
     }
 
     @Override
-    public void deleteNonePromotionProduct(Order order) {
-        order.deleteNonePromotionAppliedProductCount();
+    public boolean processNonePromotionProductDelete(Orders orders, InputView inputView) {
+        return processDiscount(orders,
+                order -> order.getPromotion() != null
+                        && order.getOrderResult().getNoneDiscountPromotionStockCount() != 0,
+                inputView::getConfirmationNonePromotionInput,
+                Order::deleteNonePromotionAppliedProductCount
+        );
+    }
+
+    private boolean processDiscount(
+            Orders orders,
+            Predicate<Order> condition,
+            Function<Order, Boolean> confirmationInput,
+            Consumer<Order> action
+    ) {
+        return orders.getOrders().stream()
+                .filter(condition)
+                .map(order -> applyDiscountIfConfirmed(order, confirmationInput, action))
+                .reduce(false, Boolean::logicalOr);
+    }
+
+    private boolean applyDiscountIfConfirmed(
+            Order order,
+            Function<Order, Boolean> confirmationInput,
+            Consumer<Order> action
+    ) {
+        boolean confirmation = getConfirmation(order, confirmationInput);
+        if (confirmation) {
+            action.accept(order);
+        }
+        return confirmation;
+    }
+
+    private boolean getConfirmation(Order order, Function<Order, Boolean> confirmationInput) {
+        return confirmationInput.apply(order);
     }
 
     private class OrderInputToOrdersUtil {
