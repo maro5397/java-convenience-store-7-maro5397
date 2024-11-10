@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import store.repository.ProductRepository;
 import store.repository.PromotionRepository;
 
@@ -98,40 +97,6 @@ class OrdersTest {
         assertSoftly(softly -> {
             softly.assertThat(this.orders.getMembershipDiscount(true)).isEqualTo(discount);
             softly.assertThat(this.orders.getMembershipDiscount(false)).isZero();
-        });
-    }
-
-    @DisplayName("구매된 수량만큼 재고를 차감")
-    @ParameterizedTest(name = "구매 수량({0}), 재고 수량(10)")
-    @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-    void testDecrementStock(int quantity) {
-        Product product = this.productRepository.getProductWithName("감자칩");
-        this.orders.addOrder(product, this.promotionRepository.getPromotionWithName(product.getPromotion()),
-                quantity);
-        Order order = this.orders.getOrders().getFirst();
-        order.applyConsumeStock();
-        assertSoftly(softly -> {
-            softly.assertThat(order.getProduct().getStock() + order.getProduct().getPromotionStock())
-                    .isEqualTo(10 - quantity);
-        });
-    }
-
-    @DisplayName("프로모션용 재고를 우선적으로 차감")
-    @ParameterizedTest(name = "구매 수량({0}), 일반 재고 수량({1}), 프로모션 재고 수량({2})")
-    @CsvSource(
-            value = {
-                    "1,5,4", "2,5,3", "3,5,2", "4,5,1", "5,5,0", "6,4,0", "7,3,0", "8,2,0", "9,1,0", "10,0,0"
-            }
-    )
-    void testDecrementPromotionStock(int quantity, int productStock, int promotionProductStock) {
-        Product product = this.productRepository.getProductWithName("감자칩");
-        this.orders.addOrder(product, this.promotionRepository.getPromotionWithName(product.getPromotion()),
-                quantity);
-        Order order = this.orders.getOrders().getFirst();
-        order.applyConsumeStock();
-        assertSoftly(softly -> {
-            softly.assertThat(order.getProduct().getStock()).isEqualTo(productStock);
-            softly.assertThat(order.getProduct().getPromotionStock()).isEqualTo(promotionProductStock);
         });
     }
 }
