@@ -5,9 +5,9 @@ import store.common.constant.ErrorMessage;
 public class Order {
     private final Product product;
     private final Promotion promotion;
-    private boolean canApplyAdditionalPromotion;
-    private OrderResult orderResult;
     private int quantity;
+    private OrderResult orderResult;
+    private boolean canApplyAdditionalPromotion;
 
     public Order(Product product, Promotion promotion, int quantity) {
         this.product = product;
@@ -29,7 +29,9 @@ public class Order {
     }
 
     public OrderResult getOrderResult() {
-        return orderResult;
+        return new OrderResult(orderResult.getPromotionApplyfreeItemCount(),
+                orderResult.getPromotionApplypaidItemCount(), orderResult.getPromotionProductConsumeCount(),
+                orderResult.getProductConsumeCount());
     }
 
     public int getQuantity() {
