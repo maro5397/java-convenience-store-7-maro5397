@@ -30,7 +30,7 @@ public class ConsoleInputViewImpl implements InputView {
     public boolean getConfirmationNonePromotionInput(Order order) {
         System.out.printf(PROMOTION_CONFIRMATION_MESSAGE, order.getProduct().getName(),
                 order.getOrderResult().getNoneDiscountPromotionStockCount());
-        return checkAnswer(Console.readLine());
+        return !checkAnswer(Console.readLine());
     }
 
     @Override
