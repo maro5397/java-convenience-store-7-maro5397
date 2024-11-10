@@ -126,7 +126,7 @@ class ApplicationTest extends NsTest {
     void testPromotionApplyStartDate() {
         assertNowTest(() -> {
             run("[초코바-2]", "N", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("초코바22,400","초코바1");
+            assertThat(output().replaceAll("\\s", "")).contains("초코바22,400", "초코바1");
         }, LocalDate.of(2024, 1, 1).atStartOfDay());
     }
 
@@ -135,7 +135,7 @@ class ApplicationTest extends NsTest {
     void testPromotionApplyEndDate() {
         assertNowTest(() -> {
             run("[초코바-2]", "N", "N");
-            assertThat(output().replaceAll("\\s", "")).contains("초코바22,400","초코바1");
+            assertThat(output().replaceAll("\\s", "")).contains("초코바22,400", "초코바1");
         }, LocalDate.of(2024, 12, 31).atStartOfDay());
     }
 
@@ -151,6 +151,18 @@ class ApplicationTest extends NsTest {
         assertSimpleTest(() -> {
             runException(input);
             assertThat(output()).contains("[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.");
+        });
+    }
+
+    @Test
+    @DisplayName("프로모션 상품 모두 소비 테스트")
+    void testConsumeAllOfPromotionProducts() {
+        assertSimpleTest(() -> {
+            run("[감자칩-10]", "Y", "N", "Y", "[오렌지주스-9]", "Y", "N", "N");
+            assertThat(output()).contains(
+                    "- 감자칩 1,500원 재고 없음 반짝할인",
+                    "- 감자칩 1,500원 재고 없음"
+            );
         });
     }
 
