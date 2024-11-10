@@ -9,12 +9,16 @@ public class Order {
     private OrderResult orderResult;
     private boolean canApplyAdditionalPromotion;
 
-    public Order(Product product, Promotion promotion, int quantity) {
+    private Order(Product product, Promotion promotion, int quantity) {
         this.product = product;
         this.promotion = promotion;
         this.quantity = quantity;
         validate();
         createOrderResult();
+    }
+
+    public static Order create(Product product, Promotion promotion, int quantity) {
+        return new Order(product, promotion, quantity);
     }
 
     public Product getProduct() {
@@ -29,8 +33,8 @@ public class Order {
     }
 
     public OrderResult getOrderResult() {
-        return new OrderResult(orderResult.getPromotionApplyfreeItemCount(),
-                orderResult.getPromotionApplypaidItemCount(), orderResult.getPromotionProductConsumeCount(),
+        return OrderResult.create(orderResult.getPromotionApplyFreeItemCount(),
+                orderResult.getPromotionApplyPaidItemCount(), orderResult.getPromotionProductConsumeCount(),
                 orderResult.getProductConsumeCount());
     }
 
@@ -50,8 +54,8 @@ public class Order {
     public void deleteNonePromotionAppliedProductCount() {
         quantity -= this.orderResult.getPromotionProductConsumeCount()
                 + this.orderResult.getProductConsumeCount()
-                - this.orderResult.getPromotionApplyfreeItemCount()
-                - this.orderResult.getPromotionApplypaidItemCount();
+                - this.orderResult.getPromotionApplyFreeItemCount()
+                - this.orderResult.getPromotionApplyPaidItemCount();
         createOrderResult();
     }
 
@@ -69,7 +73,7 @@ public class Order {
 
     private void createOrderResult() {
         if (this.product.getPromotion().isEmpty()) {
-            this.orderResult = new OrderResult(0, 0, 0, quantity);
+            this.orderResult = OrderResult.create(0, 0, 0, quantity);
             return;
         }
         OrderResult orderResult = this.promotion.calculatePromotionDiscount(this.product.getPromotionStock(),
@@ -98,8 +102,8 @@ public class Order {
 
     private OrderResult createUpdatedOrderResult(OrderResult orderResult, int promotionProductConsumeCount,
                                                  int productConsumeCount) {
-        return new OrderResult(orderResult.getPromotionApplyfreeItemCount(),
-                orderResult.getPromotionApplypaidItemCount(),
+        return OrderResult.create(orderResult.getPromotionApplyFreeItemCount(),
+                orderResult.getPromotionApplyPaidItemCount(),
                 promotionProductConsumeCount, productConsumeCount);
     }
 

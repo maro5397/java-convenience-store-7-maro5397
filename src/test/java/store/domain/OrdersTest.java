@@ -19,7 +19,7 @@ class OrdersTest {
     void setUp() {
         this.productRepository = new ProductRepository("src/main/resources/products.md");
         this.promotionRepository = new PromotionRepository("src/main/resources/promotions.md");
-        this.orders = new Orders();
+        this.orders = Orders.create();
     }
 
     void settingOrders(String productName1, int quantity1, String productName2, int quantity2) {

@@ -9,9 +9,13 @@ public class LocalDateTimePromotionStrategy implements PromotionStrategy {
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
 
-    public LocalDateTimePromotionStrategy(String startDate, String endDate) {
+    private LocalDateTimePromotionStrategy(String startDate, String endDate) {
         this.startDate = LocalDate.parse(startDate).atStartOfDay();
         this.endDate = LocalDate.parse(endDate).atStartOfDay();
+    }
+
+    public static LocalDateTimePromotionStrategy create(String startDate, String endDate) {
+        return new LocalDateTimePromotionStrategy(startDate, endDate);
     }
 
     @Override

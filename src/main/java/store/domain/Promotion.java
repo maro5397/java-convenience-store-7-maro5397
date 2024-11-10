@@ -7,10 +7,14 @@ public class Promotion {
     private final int get;
     private final PromotionStrategy promotionStrategy;
 
-    public Promotion(int buy, int get, PromotionStrategy promotionStrategy) {
+    private Promotion(int buy, int get, PromotionStrategy promotionStrategy) {
         this.buy = buy;
         this.get = get;
         this.promotionStrategy = promotionStrategy;
+    }
+
+    public static Promotion create(int buy, int get, PromotionStrategy promotionStrategy) {
+        return new Promotion(buy, get, promotionStrategy);
     }
 
     public int getGet() {
@@ -19,7 +23,7 @@ public class Promotion {
 
     public OrderResult calculatePromotionDiscount(int promotionStock, int quantity) {
         if (!isWithinPromotionPeriod()) {
-            return new OrderResult(0, 0, 0, quantity);
+            return OrderResult.create(0, 0, 0, quantity);
         }
         return getWithinPromotionDiscount(promotionStock, quantity);
     }
@@ -40,7 +44,7 @@ public class Promotion {
             freeItemCount += get;
             paidItemCount += buy;
         }
-        return new OrderResult(freeItemCount, paidItemCount,
+        return OrderResult.create(freeItemCount, paidItemCount,
                 freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount);
     }
 }

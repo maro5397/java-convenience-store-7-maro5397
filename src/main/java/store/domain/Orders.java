@@ -9,8 +9,15 @@ public class Orders {
 
     private final List<Order> orders = new ArrayList<>();
 
+    private Orders() {
+    }
+
+    public static Orders create() {
+        return new Orders();
+    }
+
     public void addOrder(Product product, Promotion promotion, int quantity) {
-        Order order = new Order(product, promotion, quantity);
+        Order order = Order.create(product, promotion, quantity);
         orders.add(order);
     }
 
@@ -42,7 +49,7 @@ public class Orders {
         for (Order order : orders) {
             if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
                 discountPrice +=
-                        order.getOrderResult().getPromotionApplyfreeItemCount() * order.getProduct().getPrice();
+                        order.getOrderResult().getPromotionApplyFreeItemCount() * order.getProduct().getPrice();
             }
         }
         return discountPrice;

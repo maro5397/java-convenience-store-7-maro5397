@@ -76,17 +76,17 @@ public class ProductRepository {
 
     private void addProductWithPromotion(String name, int price, int quantity, String promotion, Product product) {
         if (product != null) {
-            products.put(name, new Product(name, price, product.getStock(), quantity, promotion));
+            products.put(name, Product.create(name, price, product.getStock(), quantity, promotion));
             return;
         }
-        products.put(name, new Product(name, price, BASE_NUMBER_OF_STOCK, quantity, promotion));
+        products.put(name, Product.create(name, price, BASE_NUMBER_OF_STOCK, quantity, promotion));
     }
 
     private void addProductWithoutPromotion(String name, int price, int quantity, Product product) {
         if (product != null) {
-            products.put(name, new Product(name, price, quantity, product.getPromotionStock(), product.getPromotion()));
+            products.put(name, Product.create(name, price, quantity, product.getPromotionStock(), product.getPromotion()));
             return;
         }
-        products.put(name, new Product(name, price, quantity, BASE_NUMBER_OF_STOCK, NULL_PROMOTION));
+        products.put(name, Product.create(name, price, quantity, BASE_NUMBER_OF_STOCK, NULL_PROMOTION));
     }
 }

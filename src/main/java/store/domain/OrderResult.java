@@ -1,25 +1,30 @@
 package store.domain;
 
 public class OrderResult {
-    private final int promotionApplyfreeItemCount;
-    private final int promotionApplypaidItemCount;
+    private final int promotionApplyFreeItemCount;
+    private final int promotionApplyPaidItemCount;
     private final int promotionProductConsumeCount;
     private final int productConsumeCount;
 
-    public OrderResult(int freeItemCount, int paidItemCount,
+    private OrderResult(int freeItemCount, int paidItemCount,
                        int promotionProductConsumeCount, int productConsumeCount) {
-        this.promotionApplyfreeItemCount = freeItemCount;
-        this.promotionApplypaidItemCount = paidItemCount;
+        this.promotionApplyFreeItemCount = freeItemCount;
+        this.promotionApplyPaidItemCount = paidItemCount;
         this.promotionProductConsumeCount = promotionProductConsumeCount;
         this.productConsumeCount = productConsumeCount;
     }
 
-    public int getPromotionApplyfreeItemCount() {
-        return promotionApplyfreeItemCount;
+    public static OrderResult create(int freeItemCount, int paidItemCount,
+                                     int promotionProductConsumeCount, int productConsumeCount) {
+        return new OrderResult(freeItemCount, paidItemCount, promotionProductConsumeCount, productConsumeCount);
     }
 
-    public int getPromotionApplypaidItemCount() {
-        return promotionApplypaidItemCount;
+    public int getPromotionApplyFreeItemCount() {
+        return promotionApplyFreeItemCount;
+    }
+
+    public int getPromotionApplyPaidItemCount() {
+        return promotionApplyPaidItemCount;
     }
 
     public int getPromotionProductConsumeCount() {
@@ -31,7 +36,7 @@ public class OrderResult {
     }
 
     public int getNoneDiscountPromotionStockCount() {
-        return promotionProductConsumeCount + productConsumeCount - promotionApplyfreeItemCount
-                - promotionApplypaidItemCount;
+        return promotionProductConsumeCount + productConsumeCount - promotionApplyFreeItemCount
+                - promotionApplyPaidItemCount;
     }
 }

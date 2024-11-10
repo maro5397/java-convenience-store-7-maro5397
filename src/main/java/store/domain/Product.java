@@ -13,7 +13,7 @@ public class Product {
     private int promotionStock;
     private String promotion;
 
-    public Product(String name, int price, int stock, int promotionStock, String promotion) {
+    private Product(String name, int price, int stock, int promotionStock, String promotion) {
         this.name = name;
         this.price = price;
         this.stock = stock;
@@ -23,6 +23,10 @@ public class Product {
             this.promotion = BASE_STRING_OF_PROMOTION;
         }
         validate();
+    }
+
+    public static Product create(String name, int price, int stock, int promotionStock, String promotion) {
+        return new Product(name, price, stock, promotionStock, promotion);
     }
 
     public String getName() {

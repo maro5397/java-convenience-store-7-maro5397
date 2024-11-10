@@ -21,7 +21,7 @@ class ProductTest {
     )
     void testProductFieldManage(String productName, int productPrice, int productStock, int promotionProductStock,
                                 String promotionType) {
-        Product product = new Product(productName, productPrice, productStock, promotionProductStock, promotionType);
+        Product product = Product.create(productName, productPrice, productStock, promotionProductStock, promotionType);
         assertSoftly(softly -> {
             softly.assertThat(product.getName())
                     .isEqualTo(productName);
@@ -42,7 +42,7 @@ class ProductTest {
     )
     void testProductFieldNameNullException(String name, int price, int stock) {
         assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> new Product(name, price, stock, 0, ""))
+            softly.assertThatThrownBy(() -> Product.create(name, price, stock, 0, ""))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("[ERROR]");
         });
@@ -53,7 +53,7 @@ class ProductTest {
     @ValueSource(strings = {"", " "})
     void testProductFieldNameBlankEmptyException(String name) {
         assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> new Product(name, 1000, 10, 0, ""))
+            softly.assertThatThrownBy(() -> Product.create(name, 1000, 10, 0, ""))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("[ERROR]");
         });
@@ -65,7 +65,7 @@ class ProductTest {
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
     void testProductFieldNameOver100Exception(String name) {
         assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> new Product(name, 1000, 10, 0, ""))
+            softly.assertThatThrownBy(() -> Product.create(name, 1000, 10, 0, ""))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("[ERROR]");
         });
@@ -78,7 +78,7 @@ class ProductTest {
     )
     void testProductFieldPriceException(String name, int price, int stock) {
         assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> new Product(name, price, stock, 0, ""))
+            softly.assertThatThrownBy(() -> Product.create(name, price, stock, 0, ""))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("[ERROR]");
         });
@@ -91,7 +91,7 @@ class ProductTest {
     )
     void testProductFieldStockException(String name, int price, int stock) {
         assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> new Product(name, price, stock, 0, ""))
+            softly.assertThatThrownBy(() -> Product.create(name, price, stock, 0, ""))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("[ERROR]");
         });
@@ -101,7 +101,7 @@ class ProductTest {
     @ParameterizedTest(name = "구매 수량({0}), 재고 수량(5)")
     @ValueSource(ints = {1, 2, 3, 4, 5})
     void testHasSufficientStock(int quantity) {
-        Product product = new Product("콜라", 1000, 5, 0, "");
+        Product product = Product.create("콜라", 1000, 5, 0, "");
         assertSoftly(softly -> {
             softly.assertThatCode(() -> {
                 product.decrementStock(quantity);
@@ -113,7 +113,7 @@ class ProductTest {
     @ParameterizedTest(name = "구매 수량({0}), 재고 수량(5)")
     @ValueSource(ints = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20})
     void testHasNotSufficientStock(int quantity) {
-        Product product = new Product("콜라", 1000, 5, 0, "");
+        Product product = Product.create("콜라", 1000, 5, 0, "");
         assertSoftly(softly -> {
             softly.assertThatThrownBy(() -> product.decrementStock(quantity))
                     .isInstanceOf(IllegalArgumentException.class)

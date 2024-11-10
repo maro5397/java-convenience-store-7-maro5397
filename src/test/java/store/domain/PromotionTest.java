@@ -19,11 +19,7 @@ class PromotionTest {
                 LocalDateTime.parse("2024-12-31 23:59", formatter),
                 LocalDateTime.parse(dateTime, formatter)
         );
-        softDrinkPromotion = new Promotion(
-                2,
-                2,
-                promotionStrategy
-        );
+        softDrinkPromotion = Promotion.create(2, 2, promotionStrategy);
     }
 
     @DisplayName("현재 날짜가 프로모션 기간 내")
@@ -38,8 +34,8 @@ class PromotionTest {
         settingPromotion(dateTime);
         OrderResult orderResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
         assertSoftly(softly -> {
-            softly.assertThat(orderResult.getPromotionApplyfreeItemCount()).isEqualTo(freeItemCount);
-            softly.assertThat(orderResult.getPromotionApplypaidItemCount()).isEqualTo(paidItemCount);
+            softly.assertThat(orderResult.getPromotionApplyFreeItemCount()).isEqualTo(freeItemCount);
+            softly.assertThat(orderResult.getPromotionApplyPaidItemCount()).isEqualTo(paidItemCount);
         });
     }
 
@@ -56,8 +52,8 @@ class PromotionTest {
         settingPromotion(dateTime);
         OrderResult orderResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
         assertSoftly(softly -> {
-            softly.assertThat(orderResult.getPromotionApplyfreeItemCount()).isEqualTo(0);
-            softly.assertThat(orderResult.getPromotionApplypaidItemCount()).isEqualTo(0);
+            softly.assertThat(orderResult.getPromotionApplyFreeItemCount()).isEqualTo(0);
+            softly.assertThat(orderResult.getPromotionApplyPaidItemCount()).isEqualTo(0);
         });
     }
 
@@ -96,9 +92,9 @@ class PromotionTest {
     private record MockPromotionStrategy(LocalDateTime startDate, LocalDateTime endDate,
                                          LocalDateTime localDateTime) implements PromotionStrategy {
         @Override
-            public boolean getPromotionConditionChecker() {
-                return (localDateTime.isEqual(startDate) || localDateTime.isAfter(startDate)) &&
-                        (localDateTime.isEqual(endDate) || localDateTime.isBefore(endDate));
-            }
+        public boolean getPromotionConditionChecker() {
+            return (localDateTime.isEqual(startDate) || localDateTime.isAfter(startDate)) &&
+                    (localDateTime.isEqual(endDate) || localDateTime.isBefore(endDate));
         }
+    }
 }

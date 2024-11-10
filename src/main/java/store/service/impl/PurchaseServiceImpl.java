@@ -35,7 +35,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Orders makeOrders(String orderInput) {
         OrderInputToOrdersUtil ordersUtil = new OrderInputToOrdersUtil();
-        Orders orders = new Orders();
+        Orders orders = Orders.create();
         for (String order : orderInput.split(ORDER_DELIMITER)) {
             ordersUtil.getOrders(orders, order);
         }

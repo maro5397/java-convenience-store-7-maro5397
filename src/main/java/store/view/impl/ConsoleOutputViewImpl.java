@@ -97,9 +97,9 @@ public class ConsoleOutputViewImpl implements OutputView {
     }
 
     private void printPromotionDetail(Order order) {
-        if (order.getOrderResult().getPromotionApplyfreeItemCount() != 0) {
+        if (order.getOrderResult().getPromotionApplyFreeItemCount() != 0) {
             System.out.printf(RECEIPT_PROMOTION_MESSAGE, order.getProduct().getName(),
-                    order.getOrderResult().getPromotionApplyfreeItemCount());
+                    order.getOrderResult().getPromotionApplyFreeItemCount());
         }
     }
 
