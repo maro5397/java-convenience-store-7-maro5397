@@ -26,11 +26,7 @@ public class Orders {
     }
 
     public int getTotalQuantity() {
-        int total = 0;
-        for (Order order : orders) {
-            total += order.getQuantity();
-        }
-        return total;
+        return orders.parallelStream().mapToInt(Order::getQuantity).sum();
     }
 
     public int getTotalPrice() {
@@ -64,11 +60,7 @@ public class Orders {
     }
 
     private int calculateDiscountPrice() {
-        int discountPrice = 0;
-        for (Order order : orders) {
-            discountPrice += calculateOrderDiscount(order);
-        }
-        return discountPrice;
+        return orders.stream().mapToInt(this::calculateOrderDiscount).sum();
     }
 
     private int calculateOrderDiscount(Order order) {
@@ -94,8 +86,6 @@ public class Orders {
     }
 
     public void applyConsumeStock() {
-        for (Order order : orders) {
-            order.applyConsumeStock();
-        }
+        orders.forEach(Order::applyConsumeStock);
     }
 }

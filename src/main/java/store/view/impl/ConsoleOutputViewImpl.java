@@ -34,10 +34,10 @@ public class ConsoleOutputViewImpl implements OutputView {
 
     @Override
     public void displayStockStatus(List<Product> products) {
-        for (Product product : products) {
+        products.forEach(product -> {
             displayPromotionStockStatus(product);
             displayStockStatus(product);
-        }
+        });
     }
 
     @Override
@@ -79,9 +79,7 @@ public class ConsoleOutputViewImpl implements OutputView {
     }
 
     private void printOrderDetails(Orders orders) {
-        for (Order order : orders.getOrders()) {
-            printOrderDetail(order);
-        }
+        orders.getOrders().forEach(this::printOrderDetail);
     }
 
     private void printOrderDetail(Order order) {
@@ -91,9 +89,7 @@ public class ConsoleOutputViewImpl implements OutputView {
 
     private void printPromotionDetails(Orders orders) {
         System.out.println(RECEIPT_PROMOTION_HEADER_MESSAGE);
-        for (Order order : orders.getOrders()) {
-            printPromotionDetail(order);
-        }
+        orders.getOrders().forEach(this::printPromotionDetail);
     }
 
     private void printPromotionDetail(Order order) {

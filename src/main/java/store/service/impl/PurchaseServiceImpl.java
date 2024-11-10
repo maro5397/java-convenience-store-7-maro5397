@@ -1,5 +1,6 @@
 package store.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -40,9 +41,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     public Orders makeOrders(String orderInput) {
         OrderInputToOrdersUtil ordersUtil = new OrderInputToOrdersUtil();
         Orders orders = Orders.create();
-        for (String order : orderInput.split(ORDER_DELIMITER)) {
-            ordersUtil.getOrders(orders, order);
-        }
+        Arrays.stream(orderInput.split(ORDER_DELIMITER)).parallel()
+                .forEachOrdered(order -> ordersUtil.getOrders(orders, order));
         return orders;
     }
 
