@@ -1,6 +1,7 @@
 package store.view.impl;
 
 import camp.nextstep.edu.missionutils.Console;
+import store.common.constant.ErrorMessage;
 import store.domain.Order;
 import store.view.InputView;
 
@@ -48,6 +49,6 @@ public class ConsoleInputViewImpl implements InputView {
         if(answer.equals(YES) || answer.equals(NO)) {
             return answer.equals(YES);
         }
-        throw new IllegalArgumentException("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
+        throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT.getMessage());
     }
 }

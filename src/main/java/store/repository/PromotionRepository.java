@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import store.common.constant.ErrorMessage;
 import store.domain.Promotion;
 import store.domain.strategy.PromotionStrategy;
 import store.domain.strategy.impl.LocalDateTimePromotionStrategy;
@@ -31,7 +32,8 @@ public class PromotionRepository {
             processLines(br);
         } catch (IOException e) {
             System.err.println(
-                    "[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty(DIRECTORY_PROPERTY) + e.getMessage());
+                    ErrorMessage.FILE_READ_ERROR.getMessage() + System.getProperty(DIRECTORY_PROPERTY)
+                            + e.getMessage());
         }
     }
 

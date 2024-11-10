@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import store.common.constant.ErrorMessage;
 import store.domain.Product;
 
 public class ProductRepository {
     private static final int BASE_NUMBER_OF_STOCK = 0;
     private static final String PRODUCTS_DELIMITER = ",";
     private static final String NULL_PROMOTION = "null";
+    private static final String DIRECTORY_PROPERTY = "user.dir";
 
     private final Map<String, Product> products = new LinkedHashMap<>();
     private final String filePath;
@@ -29,7 +31,7 @@ public class ProductRepository {
     public Product getProductWithName(String productName) {
         Product product = products.get(productName);
         if (product == null) {
-            throw new IllegalStateException("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.");
+            throw new IllegalStateException(ErrorMessage.PRODUCT_NOT_FOUND.getMessage());
         }
         return products.get(productName);
     }
@@ -39,7 +41,7 @@ public class ProductRepository {
             skipHeader(br);
             processLines(br);
         } catch (IOException e) {
-            System.err.println("[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty("user.dir") + e.getMessage());
+            System.err.println(ErrorMessage.FILE_READ_ERROR.getMessage() + System.getProperty(DIRECTORY_PROPERTY) + e.getMessage());
         }
     }
 
