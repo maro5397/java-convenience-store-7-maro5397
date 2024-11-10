@@ -19,18 +19,19 @@ class ProductTest {
                     "컵라면,1700,1,10,MD추천상품"
             }
     )
-    void testProductFieldManage(String productName, int productPrice, int productStock, int promotionProductStock,
-                                String promotionType) {
+    void testProductFieldManage(
+            String productName,
+            int productPrice,
+            int productStock,
+            int promotionProductStock,
+            String promotionType
+    ) {
         Product product = Product.create(productName, productPrice, productStock, promotionProductStock, promotionType);
         assertSoftly(softly -> {
-            softly.assertThat(product.getName())
-                    .isEqualTo(productName);
-            softly.assertThat(product.getPrice())
-                    .isEqualTo(productPrice);
-            softly.assertThat(product.getStock())
-                    .isEqualTo(productStock);
-            softly.assertThat(product.getPromotion())
-                    .isEqualTo(promotionType);
+            softly.assertThat(product.getName()).isEqualTo(productName);
+            softly.assertThat(product.getPrice()).isEqualTo(productPrice);
+            softly.assertThat(product.getStock()).isEqualTo(productStock);
+            softly.assertThat(product.getPromotion()).isEqualTo(promotionType);
         });
     }
 

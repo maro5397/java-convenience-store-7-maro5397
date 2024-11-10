@@ -15,6 +15,10 @@ public class ProductRepository {
     private static final String PRODUCTS_DELIMITER = ",";
     private static final String NULL_PROMOTION = "null";
     private static final String DIRECTORY_PROPERTY = "user.dir";
+    private static final int PRODUCT_NAME_INDEX = 0;
+    private static final int PRODUCT_PRICE_INDEX = 1;
+    private static final int PRODUCT_QUANTITY_INDEX = 2;
+    private static final int PRODUCT_PROMOTION_INDEX = 3;
 
     private final Map<String, Product> products = new LinkedHashMap<>();
     private final String filePath;
@@ -29,8 +33,7 @@ public class ProductRepository {
     }
 
     public Product getProductWithName(String productName) {
-        Product product = products.get(productName);
-        if (product == null) {
+        if (products.get(productName) == null) {
             throw new IllegalStateException(ErrorMessage.PRODUCT_NOT_FOUND.getMessage());
         }
         return products.get(productName);
@@ -41,7 +44,9 @@ public class ProductRepository {
             skipHeader(br);
             processLines(br);
         } catch (IOException e) {
-            System.err.println(ErrorMessage.FILE_READ_ERROR.getMessage() + System.getProperty(DIRECTORY_PROPERTY) + e.getMessage());
+            System.err.println(
+                    ErrorMessage.FILE_READ_ERROR.getMessage() + System.getProperty(DIRECTORY_PROPERTY) + e.getMessage()
+            );
         }
     }
 
@@ -58,10 +63,10 @@ public class ProductRepository {
 
     private void setProducts(String line) {
         String[] values = line.split(PRODUCTS_DELIMITER);
-        String name = values[0];
-        int price = Integer.parseInt(values[1]);
-        int quantity = Integer.parseInt(values[2]);
-        String promotion = values[3];
+        String name = values[PRODUCT_NAME_INDEX];
+        int price = Integer.parseInt(values[PRODUCT_PRICE_INDEX]);
+        int quantity = Integer.parseInt(values[PRODUCT_QUANTITY_INDEX]);
+        String promotion = values[PRODUCT_PROMOTION_INDEX];
         Product product = products.get(name);
         addProduct(name, price, quantity, promotion, product);
     }
@@ -84,7 +89,10 @@ public class ProductRepository {
 
     private void addProductWithoutPromotion(String name, int price, int quantity, Product product) {
         if (product != null) {
-            products.put(name, Product.create(name, price, quantity, product.getPromotionStock(), product.getPromotion()));
+            products.put(
+                    name,
+                    Product.create(name, price, quantity, product.getPromotionStock(), product.getPromotion())
+            );
             return;
         }
         products.put(name, Product.create(name, price, quantity, BASE_NUMBER_OF_STOCK, NULL_PROMOTION));

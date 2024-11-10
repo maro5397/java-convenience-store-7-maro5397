@@ -89,8 +89,11 @@ class PromotionTest {
         });
     }
 
-    private record MockPromotionStrategy(LocalDateTime startDate, LocalDateTime endDate,
-                                         LocalDateTime localDateTime) implements PromotionStrategy {
+    private record MockPromotionStrategy(
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            LocalDateTime localDateTime
+    ) implements PromotionStrategy {
         @Override
         public boolean getPromotionConditionChecker() {
             return (localDateTime.isEqual(startDate) || localDateTime.isAfter(startDate)) &&

@@ -33,9 +33,12 @@ public class Order {
     }
 
     public OrderResult getOrderResult() {
-        return OrderResult.create(orderResult.getPromotionApplyFreeItemCount(),
-                orderResult.getPromotionApplyPaidItemCount(), orderResult.getPromotionProductConsumeCount(),
-                orderResult.getProductConsumeCount());
+        return OrderResult.create(
+                orderResult.getPromotionApplyFreeItemCount(),
+                orderResult.getPromotionApplyPaidItemCount(),
+                orderResult.getPromotionProductConsumeCount(),
+                orderResult.getProductConsumeCount()
+        );
     }
 
     public int getQuantity() {
@@ -67,8 +70,10 @@ public class Order {
     }
 
     private void canGetAdditionalProductByPromotion() {
-        this.canApplyAdditionalPromotion = this.promotion.canApplyPromotion(quantity,
-                this.product.getPromotionStock() - this.orderResult.getPromotionProductConsumeCount());
+        this.canApplyAdditionalPromotion = this.promotion.canApplyPromotion(
+                quantity,
+                this.product.getPromotionStock() - this.orderResult.getPromotionProductConsumeCount()
+        );
     }
 
     private void createOrderResult() {
@@ -76,8 +81,10 @@ public class Order {
             this.orderResult = OrderResult.create(0, 0, 0, quantity);
             return;
         }
-        OrderResult orderResult = this.promotion.calculatePromotionDiscount(this.product.getPromotionStock(),
-                this.quantity);
+        OrderResult orderResult = this.promotion.calculatePromotionDiscount(
+                this.product.getPromotionStock(),
+                this.quantity
+        );
         this.orderResult = applyPromotionProductFirst(orderResult);
         canGetAdditionalProductByPromotion();
     }
@@ -85,23 +92,30 @@ public class Order {
     private OrderResult applyPromotionProductFirst(OrderResult orderResult) {
         int productConsumeCount = orderResult.getProductConsumeCount();
         int promotionProductConsumeCount = orderResult.getPromotionProductConsumeCount();
-        promotionProductConsumeCount = calculatePromotionProductConsumeCount(productConsumeCount,
-                promotionProductConsumeCount);
+        promotionProductConsumeCount = calculatePromotionProductConsumeCount(
+                productConsumeCount,
+                promotionProductConsumeCount
+        );
         productConsumeCount -= (promotionProductConsumeCount - orderResult.getPromotionProductConsumeCount());
         return createUpdatedOrderResult(orderResult, promotionProductConsumeCount, productConsumeCount);
     }
 
     private int calculatePromotionProductConsumeCount(int productConsumeCount, int promotionProductConsumeCount) {
-        for (int i = 0;
-             (i < productConsumeCount) && (this.product.getPromotionStock() > promotionProductConsumeCount);
-             i++) {
+        for (
+                int i = 0;
+                (i < productConsumeCount) && (this.product.getPromotionStock() > promotionProductConsumeCount);
+                i++
+        ) {
             promotionProductConsumeCount += 1;
         }
         return promotionProductConsumeCount;
     }
 
-    private OrderResult createUpdatedOrderResult(OrderResult orderResult, int promotionProductConsumeCount,
-                                                 int productConsumeCount) {
+    private OrderResult createUpdatedOrderResult(
+            OrderResult orderResult,
+            int promotionProductConsumeCount,
+            int productConsumeCount
+    ) {
         return OrderResult.create(orderResult.getPromotionApplyFreeItemCount(),
                 orderResult.getPromotionApplyPaidItemCount(),
                 promotionProductConsumeCount, productConsumeCount);

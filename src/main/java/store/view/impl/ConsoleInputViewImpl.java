@@ -28,8 +28,11 @@ public class ConsoleInputViewImpl implements InputView {
 
     @Override
     public boolean getConfirmationNonePromotionInput(Order order) {
-        System.out.printf(PROMOTION_CONFIRMATION_MESSAGE, order.getProduct().getName(),
-                order.getOrderResult().getNoneDiscountPromotionStockCount());
+        System.out.printf(
+                PROMOTION_CONFIRMATION_MESSAGE,
+                order.getProduct().getName(),
+                order.getOrderResult().getNoneDiscountPromotionStockCount()
+        );
         return !checkAnswer(Console.readLine());
     }
 
@@ -46,7 +49,7 @@ public class ConsoleInputViewImpl implements InputView {
     }
 
     private boolean checkAnswer(String answer) {
-        if(answer.equals(YES) || answer.equals(NO)) {
+        if (answer.equals(YES) || answer.equals(NO)) {
             return answer.equals(YES);
         }
         throw new IllegalArgumentException(ErrorMessage.INVALID_INPUT.getMessage());

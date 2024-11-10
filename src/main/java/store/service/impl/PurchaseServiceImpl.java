@@ -20,8 +20,9 @@ import store.view.InputView;
 public class PurchaseServiceImpl implements PurchaseService {
     private static final String MATCHER_PRODUCT_KEYWORD = "product";
     private static final String MATCHER_QUANTITY_KEYWORD = "quantity";
-    private static final String REGULAR_EXPRESSION = "(?<![\\[\\{\\(\\w])\\[(?<" + MATCHER_PRODUCT_KEYWORD
-            + ">[가-힣a-zA-Z0-9]+)-(?<" + MATCHER_QUANTITY_KEYWORD + ">\\d+)\\](?![\\]\\}\\)\\w])";
+    private static final String REGULAR_EXPRESSION = "(?<![\\[\\{\\(\\w])\\[(?<" +
+            MATCHER_PRODUCT_KEYWORD + ">[가-힣a-zA-Z0-9]+)-(?<" +
+            MATCHER_QUANTITY_KEYWORD + ">\\d+)\\](?![\\]\\}\\)\\w])";
     private static final String ORDER_DELIMITER = ",";
 
     private final ProductRepository productRepository;
@@ -48,7 +49,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public boolean processAdditionalPromotionDiscount(Orders orders, InputView inputView) {
-        return processDiscount(orders,
+        return processDiscount(
+                orders,
                 Order::getCanApplyAdditionalPromotion,
                 inputView::getConfirmationFreeAdditionInput,
                 Order::applyAdditionalPromotion
@@ -57,7 +59,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public boolean processNonePromotionProductDelete(Orders orders, InputView inputView) {
-        return processDiscount(orders,
+        return processDiscount(
+                orders,
                 order -> order.getPromotion() != null
                         && order.getOrderResult().getNoneDiscountPromotionStockCount() != 0,
                 inputView::getConfirmationNonePromotionInput,
@@ -98,8 +101,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         public void getOrders(Orders orders, String order) {
             Matcher matcher = validateOrderFormat(order);
-            String productName = matcher.group(MATCHER_PRODUCT_KEYWORD);
-            Product product = getProduct(productName);
+            Product product = getProduct(matcher.group(MATCHER_PRODUCT_KEYWORD));
             Promotion promotion = getPromotion(product);
             int quantity = parseQuantity(matcher.group(MATCHER_QUANTITY_KEYWORD));
             orders.addOrder(product, promotion, quantity);

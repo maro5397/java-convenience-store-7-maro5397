@@ -17,8 +17,7 @@ public class Orders {
     }
 
     public void addOrder(Product product, Promotion promotion, int quantity) {
-        Order order = Order.create(product, promotion, quantity);
-        orders.add(order);
+        orders.add(Order.create(product, promotion, quantity));
     }
 
     public List<Order> getOrders() {
@@ -55,8 +54,7 @@ public class Orders {
         if (!isMembership) {
             return 0;
         }
-        int discountPrice = calculateDiscountPrice();
-        return applyDiscountLimit(discountPrice);
+        return applyDiscountLimit(calculateDiscountPrice());
     }
 
     private int calculateDiscountPrice() {
@@ -73,8 +71,7 @@ public class Orders {
     }
 
     private int calculateNonDiscountPromotionPrice(Order order) {
-        int noneDiscountPromotionStockCount = order.getOrderResult().getNoneDiscountPromotionStockCount();
-        return noneDiscountPromotionStockCount * order.getProduct().getPrice();
+        return order.getOrderResult().getNoneDiscountPromotionStockCount() * order.getProduct().getPrice();
     }
 
     private int calculateProductPrice(Order order) {
