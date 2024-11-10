@@ -17,6 +17,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private static final String MATCHER_QUANTITY_KEYWORD = "quantity";
     private static final String REGULAR_EXPRESSION = "(?<![\\[\\{\\(\\w])\\[(?<" + MATCHER_PRODUCT_KEYWORD
             + ">[가-힣a-zA-Z0-9]+)-(?<" + MATCHER_QUANTITY_KEYWORD + ">\\d+)\\](?![\\]\\}\\)\\w])";
+    private static final String ORDER_DELIMITER = ",";
 
     private final ProductRepository productRepository;
     private final PromotionRepository promotionRepository;
@@ -35,7 +36,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     public Orders makeOrders(String orderInput) {
         OrderInputToOrdersUtil ordersUtil = new OrderInputToOrdersUtil();
         Orders orders = new Orders();
-        for (String order : orderInput.split(",")) {
+        for (String order : orderInput.split(ORDER_DELIMITER)) {
             ordersUtil.getOrders(orders, order);
         }
         return orders;

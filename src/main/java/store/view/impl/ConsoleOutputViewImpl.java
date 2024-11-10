@@ -25,6 +25,7 @@ public class ConsoleOutputViewImpl implements OutputView {
             내실돈\t\t\t %,d
             \
             """;
+    private static final String NONE_PROMOTION_PRODUCT = "";
 
     @Override
     public void displayGreeting() {
@@ -59,10 +60,10 @@ public class ConsoleOutputViewImpl implements OutputView {
 
     private void displayStockStatus(Product product) {
         if (product.getStock() != 0) {
-            displayStockMessage(product, product.getStock(), "");
+            displayStockMessage(product, product.getStock(), NONE_PROMOTION_PRODUCT);
             return;
         }
-        displayNoneStockMessage(product, "");
+        displayNoneStockMessage(product, NONE_PROMOTION_PRODUCT);
     }
 
     private void displayStockMessage(Product product, int stock, String promotion) {
