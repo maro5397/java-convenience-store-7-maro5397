@@ -10,6 +10,9 @@ import store.domain.strategy.PromotionStrategy;
 import store.domain.strategy.impl.LocalDateTimePromotionStrategy;
 
 public class PromotionRepository {
+    private static final String PROMOTIONS_DELIMITER = ",";
+    private static final String DIRECTORY_PROPERTY = "user.dir";
+
     private final Map<String, Promotion> promotions = new HashMap<>();
     private final String filePath;
 
@@ -27,7 +30,8 @@ public class PromotionRepository {
             skipHeader(br);
             processLines(br);
         } catch (IOException e) {
-            System.err.println("[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty("user.dir") + e.getMessage());
+            System.err.println(
+                    "[ERROR] 파일을 읽는 중 오류가 발생했습니다: " + System.getProperty(DIRECTORY_PROPERTY) + e.getMessage());
         }
     }
 
@@ -43,7 +47,7 @@ public class PromotionRepository {
     }
 
     private void setPromotions(String line) {
-        String[] values = line.split(",");
+        String[] values = line.split(PROMOTIONS_DELIMITER);
         String name = values[0];
         int buy = Integer.parseInt(values[1]);
         int get = Integer.parseInt(values[2]);

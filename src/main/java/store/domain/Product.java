@@ -1,6 +1,10 @@
 package store.domain;
 
 public class Product {
+    private static final String BASE_STRING_OF_PROMOTION = "";
+    private static final String NULL_PROMOTION = "null";
+    private static final int MAX_PRODUCT_NAME = 100;
+
     private final String name;
     private final int price;
     private int stock;
@@ -13,8 +17,8 @@ public class Product {
         this.stock = stock;
         this.promotionStock = promotionStock;
         this.promotion = promotion;
-        if (promotion.equals("null")) {
-            this.promotion = "";
+        if (promotion.equals(NULL_PROMOTION)) {
+            this.promotion = BASE_STRING_OF_PROMOTION;
         }
         validate();
     }
@@ -62,7 +66,7 @@ public class Product {
         if (this.name.isBlank()) {
             throw new IllegalArgumentException("[ERROR] 이름은 공백 문자열이 될 수 없습니다.");
         }
-        if (this.name.length() > 100) {
+        if (this.name.length() > MAX_PRODUCT_NAME) {
             throw new IllegalArgumentException("[ERROR] 상품 이름은 100자 이하여야 합니다.");
         }
     }

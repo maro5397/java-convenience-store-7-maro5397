@@ -10,6 +10,10 @@ import java.util.Map;
 import store.domain.Product;
 
 public class ProductRepository {
+    private static final int BASE_NUMBER_OF_STOCK = 0;
+    private static final String PRODUCTS_DELIMITER = ",";
+    private static final String NULL_PROMOTION = "null";
+
     private final Map<String, Product> products = new LinkedHashMap<>();
     private final String filePath;
 
@@ -51,7 +55,7 @@ public class ProductRepository {
     }
 
     private void setProducts(String line) {
-        String[] values = line.split(",");
+        String[] values = line.split(PRODUCTS_DELIMITER);
         String name = values[0];
         int price = Integer.parseInt(values[1]);
         int quantity = Integer.parseInt(values[2]);
@@ -61,7 +65,7 @@ public class ProductRepository {
     }
 
     private void addProduct(String name, int price, int quantity, String promotion, Product product) {
-        if (promotion.equals("null")) {
+        if (promotion.equals(NULL_PROMOTION)) {
             addProductWithoutPromotion(name, price, quantity, product);
             return;
         }
@@ -73,7 +77,7 @@ public class ProductRepository {
             products.put(name, new Product(name, price, product.getStock(), quantity, promotion));
             return;
         }
-        products.put(name, new Product(name, price, 0, quantity, promotion));
+        products.put(name, new Product(name, price, BASE_NUMBER_OF_STOCK, quantity, promotion));
     }
 
     private void addProductWithoutPromotion(String name, int price, int quantity, Product product) {
@@ -81,6 +85,6 @@ public class ProductRepository {
             products.put(name, new Product(name, price, quantity, product.getPromotionStock(), product.getPromotion()));
             return;
         }
-        products.put(name, new Product(name, price, quantity, 0, "null"));
+        products.put(name, new Product(name, price, quantity, BASE_NUMBER_OF_STOCK, NULL_PROMOTION));
     }
 }

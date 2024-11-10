@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Orders {
+    private static final double MEMBERSHIP_DISCOUNT_RATE = 0.3;
+    private static final int MAX_MEMBERSHIP_DISCOUNT = 8000;
+
     private final List<Order> orders = new ArrayList<>();
 
     public void addOrder(Product product, Promotion promotion, int quantity) {
@@ -80,7 +83,7 @@ public class Orders {
     }
 
     private int applyDiscountLimit(int discountPrice) {
-        return Math.min((int) (discountPrice * 0.3), 8000);
+        return Math.min((int) (discountPrice * MEMBERSHIP_DISCOUNT_RATE), MAX_MEMBERSHIP_DISCOUNT);
     }
 
     public void applyConsumeStock() {

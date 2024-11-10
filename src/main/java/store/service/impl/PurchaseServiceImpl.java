@@ -12,6 +12,11 @@ import store.repository.PromotionRepository;
 import store.service.PurchaseService;
 
 public class PurchaseServiceImpl implements PurchaseService {
+    private static final String MATCHER_PRODUCT_KEYWORD = "product";
+    private static final String MATCHER_QUANTITY_KEYWORD = "quantity";
+    private static final String REGULAR_EXPRESSION = "(?<![\\[\\{\\(\\w])\\[(?<" + MATCHER_PRODUCT_KEYWORD
+            + ">[가-힣a-zA-Z0-9]+)-(?<" + MATCHER_QUANTITY_KEYWORD + ">\\d+)\\](?![\\]\\}\\)\\w])";
+
     private final ProductRepository productRepository;
     private final PromotionRepository promotionRepository;
 
@@ -46,15 +51,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     private class OrderInputToOrdersUtil {
-        private final String regex = "(?<![\\[\\{\\(\\w])\\[(?<product>[가-힣a-zA-Z0-9]+)-(?<quantity>\\d+)\\](?![\\]\\}\\)\\w])";
-        private final Pattern pattern = Pattern.compile(regex);
+        private final Pattern pattern = Pattern.compile(REGULAR_EXPRESSION);
 
         public void getOrders(Orders orders, String order) {
             Matcher matcher = validateOrderFormat(order);
-            String productName = matcher.group("product");
+            String productName = matcher.group(MATCHER_PRODUCT_KEYWORD);
             Product product = getProduct(productName);
             Promotion promotion = getPromotion(product);
-            int quantity = parseQuantity(matcher.group("quantity"));
+            int quantity = parseQuantity(matcher.group(MATCHER_QUANTITY_KEYWORD));
             orders.addOrder(product, promotion, quantity);
         }
 
