@@ -57,6 +57,10 @@ public class Orders {
         return applyMaxDiscountLimit(calculateMembershipDiscountPrice());
     }
 
+    public void applyConsumeStock() {
+        orders.forEach(Order::consumeStockForOrder);
+    }
+
     private int calculateMembershipDiscountPrice() {
         return orders.stream().mapToInt(this::calculatePriceForNonDiscountedQuantity).sum();
     }
@@ -67,9 +71,5 @@ public class Orders {
 
     private int applyMaxDiscountLimit(int discountPrice) {
         return Math.min((int) (discountPrice * MEMBERSHIP_DISCOUNT_RATE), MAX_MEMBERSHIP_DISCOUNT);
-    }
-
-    public void applyConsumeStock() {
-        orders.forEach(Order::consumeStockForOrder);
     }
 }
