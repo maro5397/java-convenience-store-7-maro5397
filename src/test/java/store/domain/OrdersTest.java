@@ -79,7 +79,7 @@ class OrdersTest {
     void testPromotionDiscount(String productName1, int quantity1, String productName2, int quantity2, int discount) {
         settingOrders(productName1, quantity1, productName2, quantity2);
         assertSoftly(softly -> {
-            softly.assertThat(this.orders.getPromotionDiscount()).isEqualTo(discount);
+            softly.assertThat(this.orders.getTotalPromotionDiscount()).isEqualTo(discount);
         });
     }
 
@@ -89,6 +89,7 @@ class OrdersTest {
             value = {
                     "정식도시락,8,콜라,20,8000",
                     "감자칩,5,초코바,5,810",
+                    "감자칩,7,초코바,7,2430",
                     "컵라면,1,에너지바,3,2310"
             }
     )

@@ -22,11 +22,11 @@ public class PurchaseController {
         do {
             displayStockStatus();
             Orders orders = getOrderFromCustomer();
-            findAdditionalPromotionDiscount(orders);
-            findNonePromotionDiscount(orders);
+            confirmAdditionoalPromotionalDiscount(orders);
+            confirmOrderWithoutPromotionDiscount(orders);
             displayReceipt(orders);
-            applyConsumeStock(orders);
-        } while (askAdditionalPurchase());
+            consumeStockByOrders(orders);
+        } while (confirmAdditionalPurchase());
     }
 
     private void displayStockStatus() {
@@ -40,35 +40,35 @@ public class PurchaseController {
         });
     }
 
-    private boolean findAdditionalPromotionDiscount(Orders orders) {
+    private boolean confirmAdditionoalPromotionalDiscount(Orders orders) {
         return executeWithRetry(() -> {
             return this.purchaseService.processAdditionalPromotionDiscount(orders, this.inputView);
         });
     }
 
-    private boolean findNonePromotionDiscount(Orders orders) {
+    private boolean confirmOrderWithoutPromotionDiscount(Orders orders) {
         return executeWithRetry(() -> {
             return this.purchaseService.processNonePromotionProductDelete(orders, this.inputView);
         });
     }
 
     private void displayReceipt(Orders orders) {
-        this.outputView.displayReceipt(orders, askMembershipDiscount());
+        this.outputView.displayReceipt(orders, confirmMembershipDiscount());
     }
 
-    private boolean askMembershipDiscount() {
+    private boolean confirmMembershipDiscount() {
         return executeWithRetry(() -> {
             return this.inputView.getConfirmationMembershipDiscountInput();
         });
     }
 
-    private void applyConsumeStock(Orders orders) {
+    private void consumeStockByOrders(Orders orders) {
         orders.applyConsumeStock();
     }
 
-    private boolean askAdditionalPurchase() {
+    private boolean confirmAdditionalPurchase() {
         return executeWithRetry(() -> {
-            return this.inputView.getAdditionalPurchaseInput();
+            return this.inputView.getConfirmationAdditionalPurchaseInput();
         });
     }
 

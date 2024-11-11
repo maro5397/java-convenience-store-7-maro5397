@@ -3,9 +3,9 @@ package store.domain;
 import store.common.constant.ErrorMessage;
 
 public class Product {
-    private static final String BASE_STRING_OF_PROMOTION = "";
-    private static final String NULL_PROMOTION = "null";
-    private static final int MAX_PRODUCT_NAME = 100;
+    private static final String DEFAULT_STRING_OF_PROMOTION = "";
+    private static final String NO_PROMOTION = "null";
+    private static final int MAX_PRODUCT_NAME_LENGTH = 100;
 
     private final String name;
     private final int price;
@@ -19,8 +19,8 @@ public class Product {
         this.stock = stock;
         this.promotionStock = promotionStock;
         this.promotion = promotion;
-        if (promotion.equals(NULL_PROMOTION)) {
-            this.promotion = BASE_STRING_OF_PROMOTION;
+        if (promotion.equals(NO_PROMOTION)) {
+            this.promotion = DEFAULT_STRING_OF_PROMOTION;
         }
         validate();
     }
@@ -72,7 +72,7 @@ public class Product {
         if (this.name.isBlank()) {
             throw new IllegalArgumentException(ErrorMessage.NAME_CANNOT_BE_EMPTY.getMessage());
         }
-        if (this.name.length() > MAX_PRODUCT_NAME) {
+        if (this.name.length() > MAX_PRODUCT_NAME_LENGTH) {
             throw new IllegalArgumentException(ErrorMessage.PRODUCT_NAME_TOO_LONG.getMessage());
         }
     }

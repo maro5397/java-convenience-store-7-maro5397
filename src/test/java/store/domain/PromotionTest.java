@@ -34,8 +34,8 @@ class PromotionTest {
         settingPromotion(dateTime);
         OrderResult orderResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
         assertSoftly(softly -> {
-            softly.assertThat(orderResult.getPromotionApplyFreeItemCount()).isEqualTo(freeItemCount);
-            softly.assertThat(orderResult.getPromotionApplyPaidItemCount()).isEqualTo(paidItemCount);
+            softly.assertThat(orderResult.getPromotionApplyFreeItemQuantity()).isEqualTo(freeItemCount);
+            softly.assertThat(orderResult.getPromotionApplyPaidItemQuantity()).isEqualTo(paidItemCount);
         });
     }
 
@@ -52,8 +52,8 @@ class PromotionTest {
         settingPromotion(dateTime);
         OrderResult orderResult = softDrinkPromotion.calculatePromotionDiscount(10, quantity);
         assertSoftly(softly -> {
-            softly.assertThat(orderResult.getPromotionApplyFreeItemCount()).isEqualTo(0);
-            softly.assertThat(orderResult.getPromotionApplyPaidItemCount()).isEqualTo(0);
+            softly.assertThat(orderResult.getPromotionApplyFreeItemQuantity()).isEqualTo(0);
+            softly.assertThat(orderResult.getPromotionApplyPaidItemQuantity()).isEqualTo(0);
         });
     }
 

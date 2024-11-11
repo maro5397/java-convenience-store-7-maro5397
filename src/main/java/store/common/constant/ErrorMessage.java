@@ -2,7 +2,7 @@ package store.common.constant;
 
 public enum ErrorMessage {
     FILE_READ_ERROR("[ERROR] 파일을 읽는 중 오류가 발생했습니다:"),
-    OUT_OF_STOCK("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요."),
+    ORDER_OUT_OF_STOCK("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요."),
     PRODUCT_NAME_MISSING("[ERROR] 상품 이름이 없습니다."),
     NAME_CANNOT_BE_EMPTY("[ERROR] 이름은 공백 문자열이 될 수 없습니다."),
     PRODUCT_NAME_TOO_LONG("[ERROR] 상품 이름은 100자 이하여야 합니다."),

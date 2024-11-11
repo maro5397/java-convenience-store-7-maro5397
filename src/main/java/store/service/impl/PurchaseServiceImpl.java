@@ -52,7 +52,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         return processDiscount(
                 orders,
                 Order::getCanApplyAdditionalPromotion,
-                inputView::getConfirmationFreeAdditionInput,
+                inputView::getConfirmationAdditionalPromotionInput,
                 Order::applyAdditionalPromotion
         );
     }
@@ -62,9 +62,9 @@ public class PurchaseServiceImpl implements PurchaseService {
         return processDiscount(
                 orders,
                 order -> order.getPromotion() != null
-                        && order.getOrderResult().getNoneDiscountPromotionStockCount() != 0,
-                inputView::getConfirmationNonePromotionInput,
-                Order::deleteNonePromotionAppliedProductCount
+                        && order.getOrderResult().getNonDiscountedOrderQuantity() != 0,
+                inputView::getConfirmationNonDiscountedOrderInput,
+                Order::reduceQuantityForNonDiscountedOrder
         );
     }
 

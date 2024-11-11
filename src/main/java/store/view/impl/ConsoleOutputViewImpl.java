@@ -93,19 +93,19 @@ public class ConsoleOutputViewImpl implements OutputView {
     }
 
     private void printPromotionDetail(Order order) {
-        if (order.getOrderResult().getPromotionApplyFreeItemCount() != 0) {
+        if (order.getOrderResult().getPromotionApplyFreeItemQuantity() != 0) {
             System.out.printf(
                     RECEIPT_PROMOTION_MESSAGE,
                     order.getProduct().getName(),
-                    order.getOrderResult().getPromotionApplyFreeItemCount()
+                    order.getOrderResult().getPromotionApplyFreeItemQuantity()
             );
         }
     }
 
     private void printReceiptFooter(Orders orders, boolean isMembership) {
-        int totalDiscount = orders.getPromotionDiscount() * -1;
+        int totalDiscount = orders.getTotalPromotionDiscount() * -1;
         int membershipDiscount = orders.getMembershipDiscount(isMembership) * -1;
-        int finalPrice = orders.getTotalPrice() - orders.getPromotionDiscount() - membershipDiscount;
+        int finalPrice = orders.getTotalPrice() - orders.getTotalPromotionDiscount() - membershipDiscount;
         System.out.printf(
                 RECEIPT_FOOTER_MESSAGE,
                 orders.getTotalQuantity(),

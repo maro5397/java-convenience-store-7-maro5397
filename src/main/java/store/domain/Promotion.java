@@ -25,7 +25,7 @@ public class Promotion {
         if (!isWithinPromotionPeriod()) {
             return OrderResult.create(0, 0, 0, quantity);
         }
-        return getWithinPromotionDiscount(promotionStock, quantity);
+        return applyPromotionWithoutAnyCondition(promotionStock, quantity);
     }
 
     public boolean canApplyPromotion(int quantity, int remainingPromotionStock) {
@@ -36,15 +36,15 @@ public class Promotion {
         return this.promotionStrategy.getPromotionConditionChecker();
     }
 
-    private OrderResult getWithinPromotionDiscount(int promotionStock, int quantity) {
-        int freeItemCount = 0;
-        int paidItemCount = 0;
-        while (promotionStock - freeItemCount - paidItemCount >= get + buy
-                && quantity - freeItemCount - paidItemCount >= get + buy) {
-            freeItemCount += get;
-            paidItemCount += buy;
+    private OrderResult applyPromotionWithoutAnyCondition(int promotionStock, int quantity) {
+        int freeItemQuantity = 0;
+        int paidItemQuantity = 0;
+        while (promotionStock - freeItemQuantity - paidItemQuantity >= get + buy
+                && quantity - freeItemQuantity - paidItemQuantity >= get + buy) {
+            freeItemQuantity += get;
+            paidItemQuantity += buy;
         }
-        return OrderResult.create(freeItemCount, paidItemCount,
-                freeItemCount + paidItemCount, quantity - paidItemCount - freeItemCount);
+        return OrderResult.create(freeItemQuantity, paidItemQuantity,
+                freeItemQuantity + paidItemQuantity, quantity - paidItemQuantity - freeItemQuantity);
     }
 }

@@ -31,20 +31,20 @@ public class Orders {
     public int getTotalPrice() {
         int total = 0;
         for (Order order : orders) {
-            if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
-                total += order.getOrderResult().getPromotionProductConsumeCount() * order.getProduct().getPrice();
+            if (order.getOrderResult().getPromotionProductConsumeQuantity() != 0) {
+                total += order.getOrderResult().getPromotionProductConsumeQuantity() * order.getProduct().getPrice();
             }
-            total += order.getOrderResult().getProductConsumeCount() * order.getProduct().getPrice();
+            total += order.getOrderResult().getProductConsumeQuantity() * order.getProduct().getPrice();
         }
         return total;
     }
 
-    public int getPromotionDiscount() {
+    public int getTotalPromotionDiscount() {
         int discountPrice = 0;
         for (Order order : orders) {
-            if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
+            if (order.getOrderResult().getPromotionProductConsumeQuantity() != 0) {
                 discountPrice +=
-                        order.getOrderResult().getPromotionApplyFreeItemCount() * order.getProduct().getPrice();
+                        order.getOrderResult().getPromotionApplyFreeItemQuantity() * order.getProduct().getPrice();
             }
         }
         return discountPrice;
@@ -54,35 +54,22 @@ public class Orders {
         if (!isMembership) {
             return 0;
         }
-        return applyDiscountLimit(calculateDiscountPrice());
+        return applyMaxDiscountLimit(calculateMembershipDiscountPrice());
     }
 
-    private int calculateDiscountPrice() {
-        return orders.stream().mapToInt(this::calculateOrderDiscount).sum();
+    private int calculateMembershipDiscountPrice() {
+        return orders.stream().mapToInt(this::calculatePriceForNonDiscountedQuantity).sum();
     }
 
-    private int calculateOrderDiscount(Order order) {
-        int orderDiscount = 0;
-        if (order.getOrderResult().getPromotionProductConsumeCount() != 0) {
-            orderDiscount += calculateNonDiscountPromotionPrice(order);
-        }
-        orderDiscount += calculateProductPrice(order);
-        return orderDiscount;
+    private int calculatePriceForNonDiscountedQuantity(Order order) {
+        return order.getOrderResult().getNonDiscountedOrderQuantity() * order.getProduct().getPrice();
     }
 
-    private int calculateNonDiscountPromotionPrice(Order order) {
-        return order.getOrderResult().getNoneDiscountPromotionStockCount() * order.getProduct().getPrice();
-    }
-
-    private int calculateProductPrice(Order order) {
-        return order.getOrderResult().getProductConsumeCount() * order.getProduct().getPrice();
-    }
-
-    private int applyDiscountLimit(int discountPrice) {
+    private int applyMaxDiscountLimit(int discountPrice) {
         return Math.min((int) (discountPrice * MEMBERSHIP_DISCOUNT_RATE), MAX_MEMBERSHIP_DISCOUNT);
     }
 
     public void applyConsumeStock() {
-        orders.forEach(Order::applyConsumeStock);
+        orders.forEach(Order::consumeStockForOrder);
     }
 }

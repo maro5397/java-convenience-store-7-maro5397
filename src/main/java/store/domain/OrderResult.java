@@ -1,51 +1,56 @@
 package store.domain;
 
 public class OrderResult {
-    private final int promotionApplyFreeItemCount;
-    private final int promotionApplyPaidItemCount;
-    private final int promotionProductConsumeCount;
-    private final int productConsumeCount;
+    private final int promotionApplyFreeItemQuantity;
+    private final int promotionApplyPaidItemQuantity;
+    private final int promotionProductConsumeQuantity;
+    private final int productConsumeQuantity;
 
     private OrderResult(
-            int freeItemCount,
-            int paidItemCount,
-            int promotionProductConsumeCount,
-            int productConsumeCount
+            int promotionApplyFreeItemQuantity,
+            int promotionApplyPaidItemQuantity,
+            int promotionProductConsumeQuantity,
+            int productConsumeQuantity
     ) {
-        this.promotionApplyFreeItemCount = freeItemCount;
-        this.promotionApplyPaidItemCount = paidItemCount;
-        this.promotionProductConsumeCount = promotionProductConsumeCount;
-        this.productConsumeCount = productConsumeCount;
+        this.promotionApplyFreeItemQuantity = promotionApplyFreeItemQuantity;
+        this.promotionApplyPaidItemQuantity = promotionApplyPaidItemQuantity;
+        this.promotionProductConsumeQuantity = promotionProductConsumeQuantity;
+        this.productConsumeQuantity = productConsumeQuantity;
     }
 
     public static OrderResult create(
-            int freeItemCount,
-            int paidItemCount,
-            int promotionProductConsumeCount,
-            int productConsumeCount
+            int promotionApplyFreeItemQuantity,
+            int promotionApplyPaidItemQuantity,
+            int promotionProductConsumeQuantity,
+            int productConsumeQuantity
     ) {
-        return new OrderResult(freeItemCount, paidItemCount, promotionProductConsumeCount, productConsumeCount);
+        return new OrderResult(
+                promotionApplyFreeItemQuantity,
+                promotionApplyPaidItemQuantity,
+                promotionProductConsumeQuantity,
+                productConsumeQuantity
+        );
     }
 
-    public int getPromotionApplyFreeItemCount() {
-        return promotionApplyFreeItemCount;
+    public int getPromotionApplyFreeItemQuantity() {
+        return promotionApplyFreeItemQuantity;
     }
 
-    public int getPromotionApplyPaidItemCount() {
-        return promotionApplyPaidItemCount;
+    public int getPromotionApplyPaidItemQuantity() {
+        return promotionApplyPaidItemQuantity;
     }
 
-    public int getPromotionProductConsumeCount() {
-        return promotionProductConsumeCount;
+    public int getPromotionProductConsumeQuantity() {
+        return promotionProductConsumeQuantity;
     }
 
-    public int getProductConsumeCount() {
-        return productConsumeCount;
+    public int getProductConsumeQuantity() {
+        return productConsumeQuantity;
     }
 
-    public int getNoneDiscountPromotionStockCount() {
-        return promotionProductConsumeCount + productConsumeCount
-                - promotionApplyFreeItemCount
-                - promotionApplyPaidItemCount;
+    public int getNonDiscountedOrderQuantity() {
+        return promotionProductConsumeQuantity + productConsumeQuantity
+                - promotionApplyFreeItemQuantity
+                - promotionApplyPaidItemQuantity;
     }
 }

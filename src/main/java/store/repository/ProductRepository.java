@@ -11,9 +11,9 @@ import store.common.constant.ErrorMessage;
 import store.domain.Product;
 
 public class ProductRepository {
-    private static final int BASE_NUMBER_OF_STOCK = 0;
+    private static final int DEFAULT_NUMBER_OF_STOCK = 0;
     private static final String PRODUCTS_DELIMITER = ",";
-    private static final String NULL_PROMOTION = "null";
+    private static final String NO_PROMOTION = "null";
     private static final String DIRECTORY_PROPERTY = "user.dir";
     private static final int PRODUCT_NAME_INDEX = 0;
     private static final int PRODUCT_PRICE_INDEX = 1;
@@ -57,11 +57,11 @@ public class ProductRepository {
     private void processLines(BufferedReader br) throws IOException {
         String line;
         while ((line = br.readLine()) != null) {
-            setProducts(line);
+            extractProducts(line);
         }
     }
 
-    private void setProducts(String line) {
+    private void extractProducts(String line) {
         String[] values = line.split(PRODUCTS_DELIMITER);
         String name = values[PRODUCT_NAME_INDEX];
         int price = Integer.parseInt(values[PRODUCT_PRICE_INDEX]);
@@ -72,7 +72,7 @@ public class ProductRepository {
     }
 
     private void addProduct(String name, int price, int quantity, String promotion, Product product) {
-        if (promotion.equals(NULL_PROMOTION)) {
+        if (promotion.equals(NO_PROMOTION)) {
             addProductWithoutPromotion(name, price, quantity, product);
             return;
         }
@@ -84,7 +84,7 @@ public class ProductRepository {
             products.put(name, Product.create(name, price, product.getStock(), quantity, promotion));
             return;
         }
-        products.put(name, Product.create(name, price, BASE_NUMBER_OF_STOCK, quantity, promotion));
+        products.put(name, Product.create(name, price, DEFAULT_NUMBER_OF_STOCK, quantity, promotion));
     }
 
     private void addProductWithoutPromotion(String name, int price, int quantity, Product product) {
@@ -95,6 +95,6 @@ public class ProductRepository {
             );
             return;
         }
-        products.put(name, Product.create(name, price, quantity, BASE_NUMBER_OF_STOCK, NULL_PROMOTION));
+        products.put(name, Product.create(name, price, quantity, DEFAULT_NUMBER_OF_STOCK, NO_PROMOTION));
     }
 }

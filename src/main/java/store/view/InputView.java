@@ -7,9 +7,9 @@ public interface InputView {
 
     boolean getConfirmationMembershipDiscountInput();
 
-    boolean getConfirmationNonePromotionInput(Order order);
+    boolean getConfirmationNonDiscountedOrderInput(Order order);
 
-    boolean getConfirmationFreeAdditionInput(Order order);
+    boolean getConfirmationAdditionalPromotionInput(Order order);
 
-    boolean getAdditionalPurchaseInput();
+    boolean getConfirmationAdditionalPurchaseInput();
 }

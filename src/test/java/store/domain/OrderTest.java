@@ -27,7 +27,7 @@ class OrderTest {
     @ValueSource(ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
     void testDecrementStock(int quantity) {
         Order order = Order.create(this.product, this.promotion, quantity);
-        order.applyConsumeStock();
+        order.consumeStockForOrder();
         assertSoftly(softly -> {
             softly.assertThat(order.getProduct().getStock() + order.getProduct().getPromotionStock())
                     .isEqualTo(10 - quantity);
@@ -43,7 +43,7 @@ class OrderTest {
     )
     void testDecrementPromotionStock(int quantity, int productStock, int promotionProductStock) {
         Order order = Order.create(this.product, this.promotion, quantity);
-        order.applyConsumeStock();
+        order.consumeStockForOrder();
         assertSoftly(softly -> {
             softly.assertThat(order.getProduct().getStock()).isEqualTo(productStock);
             softly.assertThat(order.getProduct().getPromotionStock()).isEqualTo(promotionProductStock);

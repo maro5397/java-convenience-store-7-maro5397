@@ -27,23 +27,23 @@ public class ConsoleInputViewImpl implements InputView {
     }
 
     @Override
-    public boolean getConfirmationNonePromotionInput(Order order) {
+    public boolean getConfirmationNonDiscountedOrderInput(Order order) {
         System.out.printf(
                 PROMOTION_CONFIRMATION_MESSAGE,
                 order.getProduct().getName(),
-                order.getOrderResult().getNoneDiscountPromotionStockCount()
+                order.getOrderResult().getNonDiscountedOrderQuantity()
         );
         return !checkAnswer(Console.readLine());
     }
 
     @Override
-    public boolean getConfirmationFreeAdditionInput(Order order) {
+    public boolean getConfirmationAdditionalPromotionInput(Order order) {
         System.out.printf(CONFIRM_FREE_ADDITION_MESSAGE, order.getProduct().getName(), order.getPromotion().getGet());
         return checkAnswer(Console.readLine());
     }
 
     @Override
-    public boolean getAdditionalPurchaseInput() {
+    public boolean getConfirmationAdditionalPurchaseInput() {
         System.out.println(ADDITIONAL_PURCHASE_MESSAGE);
         return checkAnswer(Console.readLine());
     }

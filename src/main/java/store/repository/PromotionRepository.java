@@ -49,11 +49,11 @@ public class PromotionRepository {
     private void processLines(BufferedReader br) throws IOException {
         String line;
         while ((line = br.readLine()) != null) {
-            setPromotions(line);
+            extractPromotions(line);
         }
     }
 
-    private void setPromotions(String line) {
+    private void extractPromotions(String line) {
         String[] values = line.split(PROMOTIONS_DELIMITER);
         String name = values[PROMOTION_NAME_INDEX];
         int buy = Integer.parseInt(values[PROMOTION_BUY_INDEX]);
