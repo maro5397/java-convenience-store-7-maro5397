@@ -11,20 +11,25 @@ public class ConsoleOutputViewImpl implements OutputView {
             안녕하세요. W편의점입니다.
             현재 보유하고 있는 상품입니다.
             """;
-    private static final String STOCK_STATUS_MESSAGE = "- %s %,d원 %,d개 %s\n";
-    private static final String NONE_STOCK_STATUS_MESSAGE = "- %s %,d원 재고 없음 %s\n";
-    private static final String RECEIPT_ORDERS_HEADER_MESSAGE = "\n===========W 편의점=============\n상품명\t\t수량\t금액";
-    private static final String RECEIPT_ORDERS_MESSAGE = "%s\t\t%,d \t%,d\n";
-    private static final String RECEIPT_PROMOTION_HEADER_MESSAGE = "===========증\t정=============";
-    private static final String RECEIPT_PROMOTION_MESSAGE = "%s\t\t%,d\n";
-    private static final String RECEIPT_FOOTER_MESSAGE = """
-            ==============================
-            총구매액\t\t%,d\t%,d
-            행사할인\t\t\t%,d
-            멤버십할인\t\t\t%,d
-            내실돈\t\t\t %,d
-            \
-            """;
+    private static final String PRODUCT_NAME_MESSAGE = "상품명";
+    private static final String QUANTITY_MESSAGE = "수량";
+    private static final String PRICE_MESSAGE = "금액";
+    private static final String TOTAL_PRICE_MESSAGE = "총구매액";
+    private static final String PROMOTION_DISCOUNT_MESSAGE = "행사할인";
+    private static final String MEMBERSHIP_DISCOUNT_MESSAGE = "멤버십할인";
+    private static final String PURCHASE_AMOUNT_MESSAGE = "내실돈";
+    private static final String RECEIPT_ORDERS_HEADER_TOP_MESSAGE = "\n==============W 편의점================";
+    private static final String RECEIPT_PROMOTION_HEADER_MESSAGE = "=============증  정===============";
+    private static final String RECEIPT_FOOTER_TOP_MESSAGE = "====================================";
+    private static final String STOCK_STATUS_FORMAT = "- %s %,d원 %,d개 %s\n";
+    private static final String NONE_STOCK_STATUS_FORMAT = "- %s %,d원 재고 없음 %s\n";
+    private static final String RECEIPT_ORDERS_HEADER_BOTTOM_FORMAT = "%-10s %10s %10s\n";
+    private static final String RECEIPT_ORDERS_FORMAT = "%-10s %,10d %,10d\n";
+    private static final String RECEIPT_PROMOTION_FORMAT = "%-10s %,10d\n";
+    private static final String TOTAL_PRICE_FORMAT = "%-10s %10d %,10d\n";
+    private static final String PROMOTION_DISCOUNT_FORMAT = "%-20s %,10d\n";
+    private static final String MEMBERSHIP_DISCOUNT_FORMAT = "%-20s %,10d\n";
+    private static final String PURCHASE_AMOUNT_FORMAT = "%-20s %,10d\n";
     private static final String NONE_PROMOTION_PRODUCT = "";
 
     @Override
@@ -67,15 +72,16 @@ public class ConsoleOutputViewImpl implements OutputView {
     }
 
     private void displayStockMessage(Product product, int stock, String promotion) {
-        System.out.printf(STOCK_STATUS_MESSAGE, product.getName(), product.getPrice(), stock, promotion);
+        System.out.printf(STOCK_STATUS_FORMAT, product.getName(), product.getPrice(), stock, promotion);
     }
 
     private void displayNoneStockMessage(Product product, String promotion) {
-        System.out.printf(NONE_STOCK_STATUS_MESSAGE, product.getName(), product.getPrice(), promotion);
+        System.out.printf(NONE_STOCK_STATUS_FORMAT, product.getName(), product.getPrice(), promotion);
     }
 
     private void printReceiptHeader() {
-        System.out.println(RECEIPT_ORDERS_HEADER_MESSAGE);
+        System.out.println(RECEIPT_ORDERS_HEADER_TOP_MESSAGE);
+        System.out.printf(RECEIPT_ORDERS_HEADER_BOTTOM_FORMAT, PRODUCT_NAME_MESSAGE, QUANTITY_MESSAGE, PRICE_MESSAGE);
     }
 
     private void printOrderDetails(Orders orders) {
@@ -84,7 +90,7 @@ public class ConsoleOutputViewImpl implements OutputView {
 
     private void printOrderDetail(Order order) {
         int totalPrice = order.getProduct().getPrice() * order.getQuantity();
-        System.out.printf(RECEIPT_ORDERS_MESSAGE, order.getProduct().getName(), order.getQuantity(), totalPrice);
+        System.out.printf(RECEIPT_ORDERS_FORMAT, order.getProduct().getName(), order.getQuantity(), totalPrice);
     }
 
     private void printPromotionDetails(Orders orders) {
@@ -95,7 +101,7 @@ public class ConsoleOutputViewImpl implements OutputView {
     private void printPromotionDetail(Order order) {
         if (order.getOrderResult().getPromotionApplyFreeItemQuantity() != 0) {
             System.out.printf(
-                    RECEIPT_PROMOTION_MESSAGE,
+                    RECEIPT_PROMOTION_FORMAT,
                     order.getProduct().getName(),
                     order.getOrderResult().getPromotionApplyFreeItemQuantity()
             );
@@ -103,14 +109,13 @@ public class ConsoleOutputViewImpl implements OutputView {
     }
 
     private void printReceiptFooter(Orders orders, boolean isMembership) {
-        int totalDiscount = orders.getTotalPromotionDiscount() * -1;
+        int totalPromotionDiscount = orders.getTotalPromotionDiscount() * -1;
         int membershipDiscount = orders.getMembershipDiscount(isMembership) * -1;
         int finalPrice = orders.getTotalPrice() - orders.getTotalPromotionDiscount() - membershipDiscount;
-        System.out.printf(
-                RECEIPT_FOOTER_MESSAGE,
-                orders.getTotalQuantity(),
-                orders.getTotalPrice(),
-                totalDiscount, membershipDiscount, finalPrice
-        );
+        System.out.println(RECEIPT_FOOTER_TOP_MESSAGE);
+        System.out.printf(TOTAL_PRICE_FORMAT, TOTAL_PRICE_MESSAGE, orders.getTotalQuantity(), orders.getTotalPrice());
+        System.out.printf(PROMOTION_DISCOUNT_FORMAT, PROMOTION_DISCOUNT_MESSAGE, totalPromotionDiscount);
+        System.out.printf(MEMBERSHIP_DISCOUNT_FORMAT, MEMBERSHIP_DISCOUNT_MESSAGE, membershipDiscount);
+        System.out.printf(PURCHASE_AMOUNT_FORMAT, PURCHASE_AMOUNT_MESSAGE, finalPrice);
     }
 }
